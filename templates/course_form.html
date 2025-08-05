@@ -1,0 +1,810 @@
+
+{% extends 'header.html' %}
+{% block content %}
+
+<div class="course-registration-container">
+    <form method="POST" action="{% if course.id %}{% url 'course_register' course.id %}{% else %}{% url 'course_register' %}{% endif %}" id="courseRegistrationForm">
+        {% csrf_token %}
+        <div class="form-header">
+            <h2 class="course-form-title">Course Registration</h2>
+            <p class="course-form-description">Join our expert-led training program to advance your skills</p>
+        </div>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Personal Information Section -->
+        <div class="course-section personal-details">
+            <div class="section-title-wrapper">
+                <i class="fas fa-user-circle"></i>
+                <h3>Personal Information</h3>
+            </div>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="traineeName"><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="traineeName" name="name" required placeholder="Enter your full name ">
+                </div>
+
+                <div class="form-field">
+                    <label for="traineeEmail"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="traineeEmail" name="email" required placeholder="Enter your email">
+                </div>
+
+                <div class="form-field">
+                    <label for="traineePhone"><i class="fas fa-phone"></i> Phone Number</label>
+                    <input type="tel" id="traineePhone" name="phone" required pattern="[0-9]{10}" placeholder="Enter 10-digit number">
+                </div>
+
+                <div class="form-field">
+                    <label for="traineeAge"><i class="fas fa-birthday-cake"></i> Age</label>
+                    <input type="number" id="traineeAge" name="age" required min="10" max="60" placeholder="Enter your age {% if course %}{{course.mode}}{% endif %}">
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Selection Section -->
+        <div class="course-section course-selection">
+            <div class="section-title-wrapper">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>Course Selection</h3>
+            </div>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="courseType"><i class="fas fa-book"></i> Course Type</label>
+                    {% if course %}
+                    <input type="text" id="courseType" name="course_type" required placeholder="Enter your course type" value="{{course.course_type}}" readonly class="readonly-field">
+                    {% else %}
+                    <select id="courseType" name="course_type" required>
+                        <option value="">Select Course Type</option>
+                        <option value="web_development">Web Development</option>
+                        <option value="digital_marketing">Digital Marketing</option>
+                        <option value="data_science">Data Science & AI</option>
+                        <option value="ui_ux">UI/UX Design</option>
+                    </select>
+                    {% endif %}
+                </div>
+
+                <div class="form-field">
+                    <label for="courseDuration"><i class="fas fa-clock"></i> Preferred Duration</label>
+                    {% if course %}
+                    <input type="text" id="courseDuration" name="duration" required placeholder="Enter your course duration" value="{{course.duration}}" readonly class="readonly-field">
+                    {% else %}
+                    <select id="courseDuration" name="duration" required>
+                        <option value="">Select Duration</option>
+                        <option value="3_months">3 Months</option>
+                        <option value="6_months">6 Months</option>
+                        <option value="1_year">1 month</option>
+                    </select>
+                    {% endif %}
+                </div>
+
+                <div class="form-field">
+                    <label for="courseMode"><i class="fas fa-laptop-house"></i> Learning Mode</label>
+                    <select id="courseMode" name="mode" required>
+                        <option value="">Select Mode</option>
+                        <option value="online">Online</option>
+                        <option value="offline">Offline</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label for="batchPreference"><i class="fas fa-calendar-alt"></i> Batch Preference</label>
+                    <select id="batchPreference" name="batch" required>
+                        <option value="">Select Batch</option>
+                        <option value="morning">Morning (9 AM - 12 PM)</option>
+                        <option value="afternoon">Afternoon (2 PM - 5 PM)</option>
+                        <option value="evening">Evening (6 PM - 9 PM)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Educational Background -->
+        <div class="course-section education-details">
+            <div class="section-title-wrapper">
+                <i class="fas fa-university"></i>
+                <h3>Educational Background</h3>
+            </div>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="qualification"><i class="fas fa-graduation-cap"></i> Highest Qualification</label>
+                    <input type="text" id="qualification" name="qualification" required placeholder="Enter your highest qualification">
+                </div>
+
+                <div class="form-field">
+                    <label for="institute"><i class="fas fa-school"></i> Institute/University</label>
+                    <input type="text" id="institute" name="institute" required placeholder="Enter your institute name">
+                </div>
+
+                <div class="form-field full-width">
+                    <label for="relevantExperience"><i class="fas fa-briefcase"></i> Relevant Experience</label>
+                    <textarea id="relevantExperience" name="experience" placeholder="Describe any relevant experience or projects"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Background -->
+        <div class="course-section technical-details">
+            <div class="section-title-wrapper">
+                <i class="fas fa-laptop-code"></i>
+                <h3>Technical Background</h3>
+            </div>
+            <div class="form-grid">
+                <div class="form-field full-width">
+                    <label for="currentSkills"><i class="fas fa-tools"></i> Current Skills</label>
+                    <div class="skills-input-container">
+                        <input type="text" id="currentSkills" placeholder="Enter a skill and press Add">
+                        <button type="button" id="addSkillBtn" class="add-skill-btn">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                    <div id="skillsContainer" class="skills-container"></div>
+                    <input type="hidden" name="skills" id="skillsInput">
+                </div>
+
+                <div class="form-field full-width">
+                    <label for="courseExpectations"><i class="fas fa-star"></i> Course Expectations</label>
+                    <textarea id="courseExpectations" name="expectations" placeholder="What do you hope to achieve from this course?"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-grid submit-container">
+            <button type="submit" class="submit-button" id="submitRegistration">
+                <i class="fas fa-paper-plane"></i> Submit Registration
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+:root {
+    --primary-color: #4f46e5;
+    --secondary-color: #3730a3;
+    --accent-color: #06b6d4;
+    --text-color: #f3f4f6;
+    --background-color: #1f2937;
+    --card-background: rgba(255, 255, 255, 0.05);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --success-color: #10b981;
+    --error-color: #ef4444;
+    --transition-speed: 0.3s;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Dark background for select dropdowns */
+select {
+    background-color: #1a1a2e !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+select option {
+    background-color: #1a1a2e !important;
+    color: var(--text-color) !important;
+}
+
+.course-registration-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0rem auto;
+    padding: 2rem 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.course-form-container {
+    background: linear-gradient(145deg, #1a1a2e, #1f1f35);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    animation: formFadeIn 0.8s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.course-form-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at bottom left, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.course-form-title {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+    margin-bottom: 2rem;
+    margin-top: 3rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+    animation: titleFadeIn 1s ease-out;
+}
+
+.course-form-description {
+    color: var(--text-color);
+    opacity: 0.9;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    animation: descriptionFadeIn 1s ease-out 0.3s both;
+}
+
+.course-section {
+    background: linear-gradient(145deg, #1f1f35, #242442);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(20px);
+    position: relative;
+    overflow: hidden;
+}
+
+.course-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--accent-color), var(--primary-color));
+    border-radius: 4px 0 0 4px;
+}
+
+.course-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(145deg, #1f1f35, #2a2a4a);
+}
+
+.section-title-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+}
+
+.section-title-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent-color), transparent);
+}
+
+.section-title-wrapper i {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    color: var(--accent-color);
+    background: rgba(6, 182, 212, 0.1);
+    padding: 0.75rem;
+    border-radius: 8px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.course-section:hover .section-title-wrapper i {
+    transform: scale(1.1);
+    background: rgba(6, 182, 212, 0.15);
+}
+
+.section-title-wrapper h3 {
+    font-size: 1.25rem;
+    color: var(--text-color);
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+}
+
+.form-field {
+    position: relative;
+}
+
+.form-field.full-width {
+    grid-column: 1 / -1;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+label i {
+    color: var(--accent-color);
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-1px);
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.submit-container {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    position: relative;
+}
+
+.submit-container::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent-color), transparent);
+}
+
+.submit-button {
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    color: #ffffff;
+    padding: 1.25rem 3rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.submit-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(6, 182, 212, 0.3);
+}
+
+.submit-button:hover::before {
+    transform: translateX(100%);
+}
+
+.skills-input-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.add-skill-btn {
+    background: var(--accent-color);
+    color: #ffffff;
+    border: none;
+    padding: 0.875rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.add-skill-btn:hover {
+    background: #07c3e3;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(6, 182, 212, 0.2);
+}
+
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.skill-tag {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid var(--border-color);
+    animation: skillFadeIn 0.3s ease-out;
+    transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+    border-color: var(--accent-color);
+}
+
+.skill-tag .remove-skill {
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.3s;
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(6, 182, 212, 0.1);
+}
+
+.skill-tag .remove-skill:hover {
+    opacity: 1;
+    background: rgba(6, 182, 212, 0.2);
+    transform: rotate(90deg);
+}
+
+/* Enhanced Animations */
+@keyframes formFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes titleFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes descriptionFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes skillFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .course-registration-container {
+        margin: 1rem auto;
+    }
+
+    .course-form-container {
+        padding: 1.5rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .course-section {
+        padding: 1.5rem;
+    }
+
+    .section-title-wrapper i {
+        font-size: 1.25rem;
+        width: 40px;
+        height: 40px;
+    }
+
+    .course-form-title {
+        font-size: 2rem;
+    }
+
+    .course-form-description {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .course-registration-container {margin:1rem auto;padding:1rem;}
+    .course-section {padding:1.25rem;}
+    .form-grid {grid-template-columns: 1fr;gap:1rem;}
+}
+
+@media (max-width: 420px) {
+    .course-form-container {
+        padding: 1.25rem;
+    }
+
+    .course-section {
+        padding: 1.25rem;
+    }
+
+    .submit-button {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+
+    .section-title-wrapper {
+        margin-bottom: 1.5rem;
+    }
+
+    .section-title-wrapper i {
+        font-size: 1.1rem;
+        width: 36px;
+        height: 36px;
+        padding: 0.5rem;
+    }
+
+    .section-title-wrapper h3 {
+        font-size: 1.1rem;
+    }
+}
+
+/* Messages Styling */
+.messages {
+    margin-bottom: 2rem;
+}
+
+.alert {
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    animation: alertFadeIn 0.5s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+@keyframes alertFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--success-color);
+    color: var(--success-color);
+}
+
+.alert-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--error-color);
+    color: var(--error-color);
+}
+
+/* Print styles */
+@media print {
+    .course-registration-container {
+        margin: 0;
+        padding: 0;
+    }
+
+    .course-form-container {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .course-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('courseRegistrationForm');
+    const submitBtn = document.getElementById('submitRegistration');
+    const sections = document.querySelectorAll('.course-section');
+
+    // Animate sections on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    sections.forEach((section, index) => {
+        section.style.transitionDelay = `${index * 0.1}s`;
+        observer.observe(section);
+    });
+
+    // Enhanced Skills Management
+    const skillsInput = document.getElementById('currentSkills');
+    const addSkillBtn = document.getElementById('addSkillBtn');
+    const skillsContainer = document.getElementById('skillsContainer');
+    const skillsHiddenInput = document.getElementById('skillsInput');
+    let skills = [];
+
+    function addSkill(skill) {
+        if (skill.trim() && !skills.includes(skill.trim())) {
+            skills.push(skill.trim());
+            const skillTag = document.createElement('div');
+            skillTag.className = 'skill-tag';
+            skillTag.innerHTML = `
+                ${skill.trim()}
+                <span class="remove-skill" data-skill="${skill.trim()}">
+                    <i class="fas fa-times"></i>
+                </span>
+            `;
+            skillsContainer.appendChild(skillTag);
+            skillsHiddenInput.value = skills.join(', ');
+
+            // Add removal animation
+            skillTag.querySelector('.remove-skill').addEventListener('click', function() {
+                const skillToRemove = this.getAttribute('data-skill');
+                skillTag.style.transform = 'scale(0.8)';
+                skillTag.style.opacity = '0';
+                setTimeout(() => {
+                    skills = skills.filter(s => s !== skillToRemove);
+                    skillTag.remove();
+                    skillsHiddenInput.value = skills.join(', ');
+                }, 300);
+            });
+        }
+    }
+
+    addSkillBtn.addEventListener('click', () => {
+        addSkill(skillsInput.value);
+        skillsInput.value = '';
+        skillsInput.focus();
+    });
+
+    skillsInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addSkill(skillsInput.value);
+            skillsInput.value = '';
+        }
+    });
+
+    // Enhanced Form Validation and Submission
+    form.addEventListener('submit', function(e) {
+        // Let the browser validate form fields natively
+        if (!form.checkValidity()) {
+            e.preventDefault(); // prevent form from submitting if invalid
+            // Add shake animation to invalid fields
+            form.querySelectorAll(':invalid').forEach(input => {
+                input.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => input.style.animation = '', 500);
+            });
+            return;
+        }
+    
+        // No need to call e.preventDefault() here if you want regular POST
+        // Just show loading animations
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.8';
+    });
+    
+
+    // Add shake animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script>
+
+{% endblock %} 

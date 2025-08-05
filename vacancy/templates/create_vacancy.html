@@ -1,0 +1,269 @@
+{% extends './templates/base.html' %}
+{% block title %}
+Vcancy Form
+{% endblock title %}
+{% block content %}
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  a{
+    text-decoration: none;
+    text-align: center;
+  }
+  .form-cont {
+    position: relative;
+    background: #1e2b3a;
+    border-radius: 16px;
+    padding: 20px 40px 40px 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    width: 70%;
+    margin: auto;
+    color: white;
+    animation: fadeIn 0.5s ease-in-out;
+    transition: box-shadow 0.5s ease;
+  }
+  .form-cont:hover{
+          box-shadow: 0 10px 25px rgba(255, 255, 255, 0.6);
+
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .form-header {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: center;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+    color: white;
+  }
+ input.form-control,
+textarea.form-control,
+select.form-control {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 10px;
+  border: 1px solid #34495e;
+}
+input.form-control:focus,
+select.form-control:focus,
+textarea.form-control:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 6px 2px rgba(52, 152, 219, 0.4);
+  background-color: #34495e;
+  color: #ecf0f1;
+}
+  .form-label {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  form {
+    width: 100%;
+    padding: 0 20px; /* Slight side padding */
+  }
+
+  .form-control {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .option-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border: 1px solid #384e63;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .option-group input[type="radio"] {
+    display: none;
+  }
+
+  .option-group label {
+    flex: 1;
+    text-align: center;
+    padding: 8px 6px;
+    font-weight: 600;
+    background-color: #2a2f3b;
+    color: #e0e6f1;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .option-group label:not(:last-child) {
+    border-right: 1px solid #384e63;
+  }
+
+  .option-group label:hover {
+    background-color: #38bdf8;
+    color: white;
+  }
+
+  .option-group input[type="radio"]:checked + label {
+    background-color: #0ea5e9;
+    color: white;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .submit {
+    background-color: #0ea5e9;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    width: 48%;
+    cursor: pointer;
+  }
+
+  .cancel {
+    background-color: #eb3434e8;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    width: 48%;
+    cursor: pointer;
+  }
+
+  .submit:hover, .cancel:hover {
+    background-color: #2a2f3b;
+    border: 1px solid white;
+    transform: translateY(-5px);
+  }
+
+  @media (max-width: 768px) {
+    .form-header {
+      font-size: 1.5rem;
+    }
+    .submit, .cancel {
+      width: 100%;
+      margin-left: 0;
+      margin-top: 10px;
+    }
+    .button-row {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+</style>
+
+<div class="container mt-5 form-cont">
+  <button type="button" class="close-btn" aria-label="Close form">&times;</button>
+    <div class="form-header">Create Vacancy</div>
+    <form  method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row mb-3">
+        <div class="col-6">
+          <label class="form-label">Position</label>
+          <input type="text" id="position" name="position" class="form-control" required>
+        </div>
+        <div class="col-6">
+          <label class="form-label">Image</label>
+          <input type="file" id="background_image" name="background_image" class="form-control" required>
+        </div>
+       
+      </div>
+
+      <div class="row ">
+         <div class="col-6">
+          <label class="form-label">Job Type</label>
+        <div class="option-group ">
+          <input type="radio" id="parttime" name="job_type" value="parttime" {% if vacancy.job_type == 'parttime'%} checked {%endif%} required>
+          <label for="parttime">Part-Time</label>
+
+          <input type="radio" id="fulltime" name="job_type" value="fulltime" {% if vacancy.job_type == 'fulltime'%} checked {%endif%}>
+          <label for="fulltime">Full-Time</label>
+        </div>
+        </div>
+        <div class="col-6">
+        <label class="form-label">Faculty</label>
+        <div class="option-group">
+          <input type="radio" id="dev" name="faculty" value="development" required>
+          <label for="dev">Development</label>
+
+          <input type="radio" id="dm" name="faculty" value="digitalmarketing">
+          <label for="dm">Digital Marketing</label>
+        </div>
+      </div>
+      </div>
+
+      
+      <div>
+          <label class="form-label">Level</label>
+                  <div class="option-group">
+                    <input type="radio" class="btn-check" name="level" id="intern" value="intern"required>
+                    <label  for="intern">Intern</label>
+        
+                    <input type="radio" class="option-group" name="level" id="junior" value="junior" >
+                    <label for="junior">Junior</label>
+        
+                    <input type="radio" class="option-group" name="level" id="senior" value="senior" >
+                    <label  for="senior">Senior</label>
+                  </div>
+                </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <label class="form-label">Task</label>
+          <textarea name="task" id="task" class="form-control"></textarea>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Description</label>
+          <textarea name="description" id="description" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="button-row">
+        <button type="submit" class="submit">Create Vacancy</button>
+        <button type="button" class="cancel" onclick="window.history.back();">Cancel</button>
+      </div>
+    </form>
+  
+</div>
+
+<script>
+  // Close button behavior
+  const closeBtn = document.querySelector('.close-btn');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      window.history.back();
+    });
+  }
+</script>
+
+{% endblock content %}

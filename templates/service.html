@@ -1,0 +1,301 @@
+{% extends "header.html" %}
+{% load static %}
+{% block content  %}
+
+<section class="cd-single-service-section">
+        <div class="cd-single-container">
+            <div class="cd-single-service-header">
+                <h2 class="cd-single-service-title">Custom Software Development</h2>
+                <p class="cd-single-service-subtitle">Scalable, secure, and user-friendly solutions tailored for your business success.</p>
+            </div>
+    
+            <div class="cd-single-service-body">
+                <div class="cd-single-service-image">
+                    <img src="{% static 'images/webdev.webp' %}" alt="Custom Software Development">
+                </div>
+                <div class="cd-single-service-content">
+                    <h3>What We Offer</h3>
+                    <p>
+                        From MVPs to enterprise software, Click Digitals builds custom solutions that boost efficiency, reduce costs, and fuel sustainable business growth.
+                    </p>
+                    <ul class="cd-single-service-list">
+                        <li>Custom Web Development for Your Business</li>
+                        <li>Effective SEO to Boost Your Rankings</li>
+                        <li> Targeted Digital Marketing That Converts</li>
+                        <li> Mobile-Friendly and Dynamic Websites</li>
+                        <li> Comprehensive Online Growth Solutions</li>
+                    </ul>
+                    <a href="#services" class="cd-btn cd-btn-primary">Start Your Project</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- New Technology Stack Section -->
+    <section class="cd-tech-stack-section">
+        <div class="cd-tech-container">
+            <h2 class="cd-section-title">Technology Stack We Use</h2>
+            <p class="cd-section-subtitle">Cutting-edge technologies for modern solutions</p>
+            
+            <div class="cd-tech-categories">
+                <div class="cd-tech-category">
+                    <h3 class="cd-tech-category-title">Frontend</h3>
+                    <div class="cd-tech-icons">
+                        <div class="cd-tech-icon">
+                            <span class="tech-name">React</span>
+                            <div class="tech-progress" data-progress="80"></div>
+                        </div>
+                        <div class="cd-tech-icon">
+                            <span class="tech-name">Html,Css,Js</span>
+                            <div class="tech-progress" data-progress="80"></div>
+                        </div>
+                        {% comment %} <div class="cd-tech-icon">
+                            <span class="tech-name">Angular</span>
+                            <div class="tech-progress" data-progress="85"></div>
+                        </div> {% endcomment %}
+                    </div>
+                </div>
+                
+                <div class="cd-tech-category">
+                    <h3 class="cd-tech-category-title">Backend</h3>
+                    <div class="cd-tech-icons">
+                        <div class="cd-tech-icon">
+                            <span class="tech-name">Node.js</span>
+                            <div class="tech-progress" data-progress="92"></div>
+                        </div>
+                        <div class="cd-tech-icon">
+                            <span class="tech-name">Python</span>
+                            <div class="tech-progress" data-progress="88"></div>
+                        </div>
+                        <div class="cd-tech-icon">
+                            <span class="tech-name">Django</span>
+                            <div class="tech-progress" data-progress="85"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cd-tech-category">
+                    <h3 class="cd-tech-category-title">Database</h3>
+                    <div class="cd-tech-icons">
+                        <div class="cd-tech-icon">
+                            <span class="tech-name">MongoDB</span>
+                            <div class="tech-progress" data-progress="90"></div>
+                        </div>
+                        <div class="cd-tech-icon">
+                            <span class="tech-name">PostgreSQL</span>
+                            <div class="tech-progress" data-progress="86"></div>
+                        </div>
+                        <div class="cd-tech-icon">
+                            <span class="tech-name">Mysql</span>
+                            <div class="tech-progress" data-progress="82"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cd-tech-category">
+                    <h3 class="cd-tech-category-title">Digital Marketing</h3>
+                    <div class="cd-tech-icons">
+                        <div class="cd-tech-icon">
+                            <span class="tech-name">Social media marketing</span>
+                            <div class="tech-progress" data-progress="50"></div>
+                        </div>
+                        <div class="cd-tech-icon">
+                            <span class="tech-name">SEO</span>
+                            <div class="tech-progress" data-progress="85"></div>
+                        </div>
+                        <div class="cd-tech-icon">
+                            <span class="tech-name">Display Advertizing</span>
+                            <div class="tech-progress" data-progress="80"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+<section class="cd-services-section" id="services">
+        <div class="cd-services-container">
+            <h2 class="cd-services-title">Our Core Services</h2>
+            <p class="cd-services-subtitle">We specialize in delivering cutting-edge digital solutions to help your business grow. Our core services include:</p>
+            
+            <div class="cd-services-grid">
+               
+                <div class="cd-service-card">
+                    <img src="{% static 'images/webdev.webp' %}" alt="Custom Software Development" class="cd-service-img">
+                    <h3 class="cd-service-heading">Web Development</h3>
+                    
+                    <p class="cd-service-text">Dynamic,Scalable and SEO-Friendly Websites that Drive Traffic, Engage Users, and Grow Your Business Online.</p>
+                    
+                    <a href="{% url 'development' %}" class="apply-btn">Start Your Project</a>
+                </div>
+                <div class="cd-service-card">
+                    <img src="{% static 'images/social.webp' %}" alt="Custom Software Development" class="cd-service-img">
+                    <h3 class="cd-service-heading">Social Media Marketing</h3>
+                    
+                    <p class="cd-service-text">Effective Digital marketing solutions that boosts your online presence, engages customers, and drives business growth.</p>
+                    
+                    <a href="{% url 'Digitalmarketing_form' %}" class="apply-btn">Start Your Project</a>
+                </div>
+
+                 <div class="cd-service-card">
+                    <img src="{% static 'images/digital.webp' %}" alt="Custom Software Development" class="cd-service-img">
+                    <h3 class="cd-service-heading">Digital Marketing</h3>
+                    
+                    <p class="cd-service-text">Effective Digital marketing solutions that boosts your online presence, engages customers, and drives business growth.</p>
+                    
+                    <a href="{% url 'combo_packages' %}" class="apply-btn">Start Your Project</a>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+
+    <section class="cd-benefits-section">
+        <div class="cd-benefits-container">
+            <h2 class="cd-section-title">Why Choose Our Services</h2>
+            <p class="cd-section-subtitle">Trusted IT experts delivering custom solutions for your business growth.</p>
+            
+            <div class="cd-benefits-grid">
+                <div class="cd-benefit-card">
+                    <div class="cd-benefit-icon">🚀</div>
+                    <h3>Faster Time-to-Market</h3>
+                    <p>Our agile methodology and experienced team ensure your product reaches the market faster than traditional development approaches.</p>
+                    <div class="cd-benefit-stats">
+                        <span class="cd-stat-number">40%</span>
+                        <span class="cd-stat-label">Faster Delivery</span>
+                    </div>
+                </div>
+                
+                <div class="cd-benefit-card">
+                    <div class="cd-benefit-icon">💰</div>
+                    <h3>Cost-Effective Solutions</h3>
+                    <p>We optimize resources and leverage proven technologies to deliver maximum value within your budget constraints.</p>
+                    <div class="cd-benefit-stats">
+                        <span class="cd-stat-number">30%</span>
+                        <span class="cd-stat-label">Cost Reduction</span>
+                    </div>
+                </div>
+                
+                <div class="cd-benefit-card">
+                    <div class="cd-benefit-icon">🔒</div>
+                    <h3>Enterprise Security</h3>
+                    <p>Built-in security measures and compliance standards ensure your data and applications are always protected.</p>
+                    <div class="cd-benefit-stats">
+                        <span class="cd-stat-number">99.9%</span>
+                        <span class="cd-stat-label">Uptime Guarantee</span>
+                    </div>
+                </div>
+                
+                <div class="cd-benefit-card">
+                    <div class="cd-benefit-icon">📈</div>
+                    <h3>Scalable Architecture</h3>
+                    <p>Our solutions are designed to grow with your business, handling increased load and new features seamlessly.</p>
+                    <div class="cd-benefit-stats">
+                        <span class="cd-stat-number">10x</span>
+                        <span class="cd-stat-label">Scalability Factor</span>
+                    </div>
+                </div>
+                
+                <div class="cd-benefit-card">
+                    <div class="cd-benefit-icon">🤝</div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock technical support ensures your applications run smoothly and issues are resolved quickly.</p>
+                    <div class="cd-benefit-stats">
+                        <span class="cd-stat-number">&lt;1hr</span>
+                        <span class="cd-stat-label">Response Time</span>
+                    </div>
+                </div>
+                
+                <div class="cd-benefit-card">
+                    <div class="cd-benefit-icon">⚡</div>
+                    <h3>Performance Optimized</h3>
+                    <p>Our applications are optimized for speed and efficiency, providing excellent user experience across all devices.</p>
+                    <div class="cd-benefit-stats">
+                        <span class="cd-stat-number">3s</span>
+                        <span class="cd-stat-label">Load Time</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Development Process Section -->
+    <section class="cd-process-section">
+        <div class="cd-process-container">
+            <h2 class="cd-section-title">Our Development Process</h2>
+            <p class="cd-section-subtitle">A proven methodology that ensures project success</p>
+            
+            <div class="cd-process-timeline">
+                <div class="cd-process-step">
+                    <div class="cd-step-number">01</div>
+                    <div class="cd-step-content">
+                        <h3>Discovery & Analysis</h3>
+                        <p>We start by understanding your business needs, requirements, and goals to create a tailored solution strategy.</p>
+                        <ul>
+                            <li>Requirements gathering</li>
+                            <li>Market research</li>
+                            <li>Technical feasibility</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="cd-process-step">
+                    <div class="cd-step-number">02</div>
+                    <div class="cd-step-content">
+                        <h3>Design & Architecture</h3>
+                        <p>Our team creates detailed wireframes, UI/UX designs, and system architecture for your software solution.</p>
+                        <ul>
+                            <li>System architecture</li>
+                            <li>UI/UX design</li>
+                            <li>Prototype development</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="cd-process-step">
+                    <div class="cd-step-number">03</div>
+                    <div class="cd-step-content">
+                        <h3>Development & Testing</h3>
+                        <p>Agile development with continuous testing ensures high-quality code and faster time-to-market.</p>
+                        <ul>
+                            <li>Agile development</li>
+                            <li>Code review</li>
+                            <li>Quality assurance</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="cd-process-step">
+                    <div class="cd-step-number">04</div>
+                    <div class="cd-step-content">
+                        <h3>Deployment & Support</h3>
+                        <p>Smooth deployment to production with ongoing support and maintenance to ensure optimal performance.</p>
+                        <ul>
+                            <li>Production deployment</li>
+                            <li>Performance monitoring</li>
+                            <li>Ongoing support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+   
+    
+    <script>
+        // Add progress bar animations on scroll
+        window.addEventListener('scroll', () => {
+            const progressBars = document.querySelectorAll('.tech-progress');
+            progressBars.forEach(bar => {
+                const rect = bar.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const progress = bar.getAttribute('data-progress');
+                    bar.style.setProperty('--progress', progress + '%');
+                }
+            });
+        });
+    </script>
+{% include "footer.html" %}
+{% endblock  %}

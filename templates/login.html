@@ -1,0 +1,506 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClickDigitals - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary-color: #00b09b;
+            --secondary-color: #f39c12;
+            --accent-color: #96c93d;
+            --dark-color: #333;
+            --light-color: #f5f5f5;
+            --error-color: #e74c3c;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 850px;
+            height: 580px;
+            background: white;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .img-section {
+            position: relative;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transition: transform 1.2s ease-in-out;
+        }
+
+        .img-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.08)"/></svg>');
+            background-size: cover;
+        }
+
+        .logo {
+            width: 90%;
+            max-width: 300px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.5s;
+        }
+
+        .img-text {
+            padding: 0 30px;
+            text-align: center;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.8s;
+        }
+
+        .img-text h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .img-text p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .form-section {
+            position: relative;
+            width: 50%;
+            height: 100%;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transform: translateX(20px);
+            opacity: 0;
+            animation: fadeInRight 1s forwards 0.3s;
+        }
+
+        .form-section h2 {
+            font-size: 32px;
+            color: var(--dark-color);
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px;
+            font-size: 16px;
+            color: var(--dark-color);
+            border: none;
+            border-bottom: 2px solid #ddd;
+            outline: none;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .input-group label {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 16px;
+            color: #999;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group input:valid {
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .input-group input:focus ~ label,
+        .input-group input:valid ~ label {
+            transform: translateY(-25px);
+            font-size: 12px;
+            color: var(--primary-color);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember input {
+            margin-right: 8px;
+            accent-color: var(--primary-color);
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: var(--accent-color);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 176, 155, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 176, 155, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(0, 176, 155, 0.3);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .signup-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .signup-link a:hover {
+            color: var(--accent-color);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateX(-3px);
+        }
+
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                transform: translateX(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Floating elements animation */
+        .floating {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .floating:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation: float 8s infinite linear;
+        }
+
+        .floating:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 70%;
+            left: 20%;
+            animation: float 10s infinite linear;
+        }
+
+        .floating:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            top: 40%;
+            left: 70%;
+            animation: float 7s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(10px, -15px) rotate(90deg);
+            }
+            50% {
+                transform: translate(20px, 10px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-10px, 15px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        /* Error message */
+        .error-message {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container {
+                width: 90%;
+                max-width: 500px;
+                height: auto;
+                flex-direction: column;
+            }
+
+            .img-section, .form-section {
+                width: 100%;
+            }
+
+            .img-section {
+                height: 220px;
+                padding: 20px;
+            }
+
+            .form-section {
+                padding: 40px 30px;
+            }
+
+            .logo {
+                width: 200px;
+                margin-bottom: 10px;
+            }
+
+            .img-text h2 {
+                font-size: 22px;
+                margin-bottom: 5px;
+            }
+
+            .img-text p {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+            }
+
+            .form-section {
+                padding: 30px 20px;
+            }
+
+            .img-section {
+                height: 180px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <button class="back-btn" onclick="goHome()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path>
+            </svg>
+        </button>
+        
+        <div class="img-section">
+            <!-- Floating elements for animation -->
+            <div class="floating"></div>
+            <div class="floating"></div>
+            <div class="floating"></div>
+            
+            <!-- ClickDigitals Logo -->
+            <img src="{% static 'images/clickdigital.png' %}" alt="ClickDigitals" class="logo">
+            <div class="img-text">
+                <h2>Welcome Back!</h2>
+                <p>Access your account to manage projects, track progress, and connect with your team.</p>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2>Sign In</h2>
+            <form id="login-form" method="post" action="{% url 'login'%}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" id="username" name="username" placeholder="" required>
+                    <label for="username">Username</label>
+                    <div class="error-message" id="username-error">Please enter a valid email or username</div>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="password"  name="password"required>
+                    <label for="password">Password</label>
+                    <div class="error-message" id="password-error">Password must be at least 6 characters</div>
+                </div>
+                
+                
+                <button type="submit" class="btn">Sign In</button>
+                
+               
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function goHome() {
+            window.location.href = '/';
+        }
+    </script>
+    <!-- <script>
+        // Form validation
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let isValid = true;
+            const username = document.getElementById('username');
+            const password = document.getElementById('password');
+            const usernameError = document.getElementById('username-error');
+            const passwordError = document.getElementById('password-error');
+            
+            // Reset errors
+            usernameError.style.display = 'none';
+            passwordError.style.display = 'none';
+            
+            // Validate username/email
+            if (username.value.trim() === '') {
+                usernameError.style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validate password
+            if (password.value.length < 6) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            }
+            
+            // If valid, simulate login success
+            if (isValid) {
+                const btn = document.querySelector('.btn');
+                btn.innerHTML = 'Signing In...';
+                btn.disabled = true;
+                
+                // Simulate API call
+                setTimeout(() => {
+                    // Successful login animation
+                    btn.innerHTML = 'Success!';
+                    btn.style.background = 'linear-gradient(to right, #00b09b, #00b09b)';
+                    
+                    // Redirect after success animation
+                    setTimeout(() => {
+                        // Redirect to dashboard or home page
+                        window.location.href = 'index.html';
+                    }, 1000);
+                }, 1500);
+            }
+        });
+        
+      
+        
+        // Add floating animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const formSection = document.querySelector('.form-section');
+            const inputFields = document.querySelectorAll('input');
+            
+            // Focus animation for input fields
+            inputFields.forEach(input => {
+                // Check if input has value on page load
+                if (input.value !== '') {
+                    input.parentElement.querySelector('label').classList.add('active');
+                }
+            });
+        });
+    </script> -->
+</body>
+</html>

@@ -1,0 +1,1028 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+        --secondary-gradient: linear-gradient(135deg, #111122 0%, #222244 100%);
+        --accent-color: #4f7cff;
+        --secondary-accent: #6366f1;
+        --text-primary: #ffffff;
+        --text-secondary: rgba(255, 255, 255, 0.8);
+        
+        --text-muted: rgba(255, 255, 255, 0.6);
+        --card-bg: rgba(79, 124, 255, 0.05);
+        --card-border: rgba(79, 124, 255, 0.1);
+        --input-bg: rgba(79, 124, 255, 0.08);
+        --input-border: rgba(79, 124, 255, 0.15);
+        --input-focus: #4f7cff;
+        --success-color: #22c55e;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --info-color: #3b82f6;
+        --dark-bg: #0d0d1d;
+        --darker-bg: #050510;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        padding-top: 100px;
+        line-height: 1.6;
+        font-weight: 400;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 20%, rgba(79, 124, 255, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 40% 60%, rgba(59, 130, 246, 0.02) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+        animation: backgroundPulse 15s ease-in-out infinite alternate;
+    }
+
+    @keyframes backgroundPulse {
+        0% { 
+            transform: scale(1) rotate(0deg);
+            opacity: 0.5;
+        }
+        100% { 
+            transform: scale(1.1) rotate(2deg);
+            opacity: 0.8;
+        }
+    }
+
+    .course-form-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 3rem;
+        background: linear-gradient(145deg, rgba(79, 124, 255, 0.08), rgba(99, 102, 241, 0.03));
+        border-radius: 24px;
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--card-border);
+        box-shadow: 
+            0 25px 50px rgba(15, 23, 42, 0.6),
+            inset 0 1px 0 rgba(79, 124, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        animation: containerFadeIn 1s ease-out;
+    }
+
+    @keyframes containerFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .course-form-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent),
+            radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+        animation: containerGlow 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes containerGlow {
+        0% { opacity: 0.3; }
+        100% { opacity: 0.7; }
+    }
+
+    .course-form-container > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        animation: headerSlideDown 0.8s ease-out;
+    }
+
+    @keyframes headerSlideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-title {
+        color: var(--text-primary);
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        animation: titleGlow 3s ease-in-out infinite alternate;
+        letter-spacing: -1px;
+    }
+
+    @keyframes titleGlow {
+        0% { 
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: scale(1);
+        }
+        100% { 
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+            transform: scale(1.02);
+        }
+    }
+
+    .form-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        font-weight: 300;
+        margin: 0;
+        animation: subtitleFade 1s ease-out 0.3s both;
+    }
+
+    @keyframes subtitleFade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    .form-section {
+        margin-bottom: 3rem;
+        padding: 2.5rem;
+        background: linear-gradient(145deg, rgba(79, 124, 255, 0.06), rgba(99, 102, 241, 0.02));
+        border-radius: 20px;
+        border: 1px solid rgba(79, 124, 255, 0.08);
+        backdrop-filter: blur(15px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(to bottom, var(--text-primary), var(--text-secondary));
+        border-radius: 0 4px 4px 0;
+        animation: borderPulse 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes borderPulse {
+        0% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
+
+    .form-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .form-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.8s ease;
+    }
+
+    .form-section:hover::after {
+        transform: translateX(100%);
+    }
+    
+    .section-title {
+        color: var(--text-primary);
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-weight: 700;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        animation: titleSlide 0.6s ease-out;
+    }
+
+    @keyframes titleSlide {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .section-title i {
+        font-size: 1.4rem;
+        color: var(--text-primary);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+        padding: 0.75rem;
+        border-radius: 12px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(100, 255, 218, 0.2);
+    }
+    
+    .form-field {
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    
+    .form-field label {
+        display: block;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+        font-size: 1rem;
+        letter-spacing: 0.3px;
+        position: relative;
+    }
+
+    .form-field label::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 30px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-color), transparent);
+        border-radius: 1px;
+    }
+    
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+        width: 100%;
+        padding: 1.25rem 1.5rem;
+        background: var(--input-bg);
+        border: 2px solid var(--input-border);
+        border-radius: 14px;
+        color: var(--text-primary);
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 400;
+    }
+    
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+        outline: none;
+        border-color: var(--input-focus);
+        box-shadow: 0 0 0 4px rgba(100, 255, 218, 0.15);
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-2px);
+    }
+
+    /* Enhanced Select Styling */
+    .form-field select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364ffda' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 1rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 3rem;
+        appearance: none;
+        cursor: pointer;
+    }
+
+    .form-field select option {
+        background-color: #1e1b4b;
+        color: var(--text-primary);
+        padding: 1rem;
+        border: none;
+    }
+
+    /* Status Toggle Styling */
+    .status-toggle {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+        border-radius: 14px;
+        border: 2px solid var(--input-border);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .status-toggle::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.1), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+
+    .status-toggle:hover::before {
+        transform: translateX(100%);
+    }
+
+    .status-toggle:hover {
+        border-color: var(--accent-color);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+        transform: translateY(-1px);
+    }
+
+    .status-toggle input[type="checkbox"] {
+        width: 60px;
+        height: 30px;
+        appearance: none;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .status-toggle input[type="checkbox"]:checked {
+        background: linear-gradient(135deg, var(--success-color), #059669);
+        border-color: var(--success-color);
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .status-toggle input[type="checkbox"]::before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 22px;
+        height: 22px;
+        background: white;
+        border-radius: 50%;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .status-toggle input[type="checkbox"]:checked::before {
+        transform: translateX(30px);
+        background: white;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .status-label {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .status-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--danger-color);
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+    }
+
+    .status-toggle input[type="checkbox"]:checked + .status-label .status-indicator {
+        background: var(--success-color);
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+    }
+
+    /* Grid layouts */
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: start;
+    }
+
+    .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        align-items: start;
+    }
+
+    .grid-status {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        align-items: center;
+    }
+    
+    /* Syllabus Builder */
+    .syllabus-builder {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+        border-radius: 18px;
+        padding: 2.5rem;
+        margin-top: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        position: relative;
+    }
+
+    .syllabus-builder::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent-color), var(--secondary-accent), var(--info-color));
+        border-radius: 18px 18px 0 0;
+    }
+    
+    .module-item {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .module-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, var(--secondary-accent), var(--accent-color));
+        border-radius: 16px 16px 0 0;
+    }
+
+    .module-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        border-color: rgba(100, 255, 218, 0.3);
+    }
+    
+    .module-header {
+        display: grid;
+        grid-template-columns: 2fr 1fr auto;
+        gap: 1.5rem;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .topic-list {
+        margin-top: 1.5rem;
+    }
+    
+    .topic-item {
+        display: grid;
+        grid-template-columns: 1fr 2fr auto;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .topic-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(100, 255, 218, 0.2);
+        transform: translateX(5px);
+    }
+    
+    /* Enhanced Button Styling */
+    .btn {
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+
+    .btn:hover::before {
+        transform: translateX(100%);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
+        color: #ffffff;
+        box-shadow: 0 6px 20px rgba(79, 124, 255, 0.4);
+        border: 2px solid transparent;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 35px rgba(79, 124, 255, 0.5);
+        background: linear-gradient(135deg, var(--secondary-accent), var(--accent-color));
+    }
+    
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--accent-color);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-danger {
+        background: linear-gradient(135deg, var(--danger-color), #dc2626);
+        color: #fff;
+        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        border: 2px solid transparent;
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(239, 68, 68, 0.5);
+    }
+
+    .btn-small {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .submit-section {
+        text-align: center;
+        margin-top: 4rem;
+        padding-top: 3rem;
+        border-top: 2px solid rgba(100, 255, 218, 0.2);
+        position: relative;
+    }
+
+    .submit-section::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-color), var(--secondary-accent));
+        border-radius: 1px;
+    }
+
+    .submit-btn {
+        padding: 1.5rem 4rem;
+        font-size: 1.2rem;
+        min-width: 250px;
+        font-weight: 700;
+    }
+
+    /* Progress Indicator */
+    .form-progress {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .progress-step {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .progress-step.active {
+        background: var(--accent-color);
+        box-shadow: 0 0 15px rgba(100, 255, 218, 0.6);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .course-form-container {
+            margin: 1.5rem;
+            padding: 2.5rem;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .course-form-container {
+            margin: 1rem;
+            padding: 2rem;
+        }
+
+        .form-title {
+            font-size: 2.5rem;
+        }
+
+        .grid-2,
+        .grid-3,
+        .grid-status {
+            grid-template-columns: 1fr;
+        }
+
+        .form-section {
+            padding: 2rem;
+        }
+
+        .module-header {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .topic-item {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .status-toggle {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .course-form-container {
+            padding: 1.5rem;
+        }
+
+        .form-title {
+            font-size: 2rem;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .module-header .btn,
+        .topic-item .btn {
+            width: auto;
+        }
+
+        .submit-btn {
+            width: 100%;
+            min-width: unset;
+        }
+    }
+
+    /* Animation for form sections */
+    .form-section {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .form-section:nth-child(2) { animation-delay: 0.1s; }
+    .form-section:nth-child(3) { animation-delay: 0.2s; }
+    .form-section:nth-child(4) { animation-delay: 0.3s; }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Loading state */
+    .btn.loading {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+
+    .btn.loading::after {
+        content: '';
+        width: 16px;
+        height: 16px;
+        border: 2px solid transparent;
+        border-top: 2px solid currentColor;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-left: 0.5rem;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+</style>
+
+<div class="course-form-container">
+    <div class="form-header">
+        <h1 class="form-title">Create New Course</h1>
+        <p class="form-subtitle">Build comprehensive learning experiences with detailed curriculum</p>
+        
+        <div class="form-progress">
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+        </div>
+    </div>
+    
+    <form method="post" id="courseForm">
+        {% csrf_token %}
+        
+        <!-- Basic Information -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-info-circle"></i>
+                Basic Information
+            </h3>
+            
+            <div class="form-field">
+                <label for="{{ form.title.id_for_label }}">Course Title</label>
+                {{ form.title }}
+            </div>
+            
+            <div class="form-field">
+                <label for="{{ form.description.id_for_label }}">Course Description</label>
+                {{ form.description }}
+            </div>
+            
+            <div class="grid-2">
+                <div class="form-field">
+                    <label for="{{ form.level.id_for_label }}">Difficulty Level</label>
+                    {{ form.level }}
+                </div>
+                
+                <div class="form-field">
+                    <label for="{{ form.course_type.id_for_label }}">Course Category</label>
+                    {{ form.course_type }}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Course Details -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-cog"></i>
+                Course Configuration
+            </h3>
+            
+            <div class="grid-3">
+                <div class="form-field">
+                    <label for="{{ form.duration.id_for_label }}">Duration</label>
+                    {{ form.duration }}
+                </div>
+                
+                <div class="form-field">
+                    <label for="{{ form.mode.id_for_label }}">Learning Mode</label>
+                    {{ form.mode }}
+                </div>
+                
+                <div class="form-field">
+                    <label for="{{ form.fee.id_for_label }}">Course Fee (₹)</label>
+                    {{ form.fee }}
+                </div>
+            </div>
+            
+            <div class="grid-status">
+                <div class="form-field">
+                    <label for="{{ form.start_date.id_for_label }}">Course Start Date</label>
+                    {{ form.start_date }}
+                </div>
+                
+                <div class="form-field">
+                    <label>Course Status</label>
+                    <div class="status-toggle">
+                        {{ form.is_active }}
+                        <label for="{{ form.is_active.id_for_label }}" class="status-label">
+                            <span class="status-indicator"></span>
+                            <span id="status-text">Inactive</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Syllabus Builder -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-list-alt"></i>
+                Course Syllabus Builder
+            </h3>
+            
+            <div class="syllabus-builder">
+                <div id="modulesList"></div>
+                
+                <button type="button" class="btn btn-secondary" onclick="addModule()">
+                    <i class="fas fa-plus"></i> Add New Module
+                </button>
+            </div>
+        </div>
+        
+        {{ form.syllabus }}
+        {{ form.syllabus_json }}
+        
+        <div class="submit-section">
+            <button type="submit" class="btn btn-primary submit-btn" id="submitBtn">
+                <i class="fas fa-save"></i> Create Course
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+let moduleCount = 0;
+let syllabusData = [];
+
+function updateStatusText() {
+    const statusCheckbox = document.getElementById('id_is_active');
+    const statusText = document.getElementById('statusText');
+    
+    if (statusCheckbox.checked) {
+        statusText.textContent = 'Active';
+    } else {
+        statusText.textContent = 'Inactive';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const statusCheckbox = document.getElementById('id_is_active');
+    
+    statusCheckbox.addEventListener('change', updateStatusText);
+    updateStatusText(); // Initial call
+    
+    // Initialize with one module
+    addModule();
+    
+    // Form submission with loading state
+    document.getElementById('courseForm').addEventListener('submit', function() {
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.classList.add('loading');
+        submitBtn.innerHTML = '<i class="fas fa-spinner"></i> Creating Course...';
+    });
+});
+
+function addModule() {
+    moduleCount++;
+    const moduleId = `module_${moduleCount}`;
+    
+    const moduleHtml = `
+        <div class="module-item" id="${moduleId}">
+            <div class="module-header">
+                <input type="text" class="module-title-input" placeholder="Enter module title..." 
+                       onchange="updateSyllabus()" style="padding: 1rem 1.25rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: white; font-size: 1rem;">
+                <input type="text" placeholder="Duration (e.g., 2 weeks)" 
+                       onchange="updateSyllabus()" style="padding: 1rem 1.25rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: white; font-size: 1rem;">
+                <button type="button" class="btn btn-danger btn-small" onclick="removeModule('${moduleId}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            
+            <div class="topic-list" id="${moduleId}_topics">
+                <button type="button" class="btn btn-secondary btn-small" onclick="addTopic('${moduleId}')">
+                    <i class="fas fa-plus"></i> Add Topic
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('modulesList').insertAdjacentHTML('beforeend', moduleHtml);
+    updateSyllabus();
+}
+
+function removeModule(moduleId) {
+    document.getElementById(moduleId).remove();
+    updateSyllabus();
+}
+
+function addTopic(moduleId) {
+    const topicId = `topic_${Date.now()}`;
+    const topicHtml = `
+        <div class="topic-item" id="${topicId}">
+            <input type="text" placeholder="Topic title..." onchange="updateSyllabus()" 
+                   style="padding: 0.875rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
+            <input type="text" placeholder="Topic description..." onchange="updateSyllabus()" 
+                   style="padding: 0.875rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
+            <button type="button" class="btn btn-danger btn-small" onclick="removeTopic('${topicId}')">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    const topicsList = document.getElementById(`${moduleId}_topics`);
+    topicsList.insertAdjacentHTML('afterbegin', topicHtml);
+    updateSyllabus();
+}
+
+function removeTopic(topicId) {
+    document.getElementById(topicId).remove();
+    updateSyllabus();
+}
+
+function updateSyllabus() {
+    const modules = [];
+    const moduleElements = document.querySelectorAll('.module-item');
+    
+    moduleElements.forEach((moduleEl, index) => {
+        const titleInput = moduleEl.querySelector('.module-title-input');
+        const durationInput = moduleEl.querySelector('input[placeholder*="Duration"]');
+        const topicElements = moduleEl.querySelectorAll('.topic-item');
+        
+        const topics = [];
+        topicElements.forEach(topicEl => {
+            const titleInput = topicEl.querySelector('input[placeholder*="title"]');
+            const descInput = topicEl.querySelector('input[placeholder*="description"]');
+            
+            if (titleInput && titleInput.value.trim()) {
+                topics.push({
+                    title: titleInput.value.trim(),
+                    description: descInput ? descInput.value.trim() : ''
+                });
+            }
+        });
+        
+        if (titleInput && titleInput.value.trim()) {
+            modules.push({
+                module_number: index + 1,
+                title: titleInput.value.trim(),
+                duration: durationInput ? durationInput.value.trim() : '',
+                topics: topics
+            });
+        }
+    });
+    
+    syllabusData = modules;
+    const syllabusJsonField = document.getElementById('id_syllabus_json');
+    if (syllabusJsonField) {
+        syllabusJsonField.value = JSON.stringify(modules);
+    }
+}
+</script>
+
+{% endblock %}

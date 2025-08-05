@@ -1,0 +1,304 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0a0f1e, #1c2a3a, #2c3e50);
+    color: white;
+    min-height: 100vh;
+  }
+
+  .container {
+    padding: 20px 0 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .ggg {
+    background: rgba(31, 44, 59, 0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    transition: all 0.35s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 15px;
+  }
+
+  .ggg:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .card-header {
+    text-align: center;
+    padding-bottom: 18px;
+    margin-bottom: 5px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s;
+    display: inline-block;
+    padding-bottom: 8px;
+  }
+
+  .title:hover {
+    color: #38bdf8;
+  }
+
+  .info-inline {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .info-inline span {
+    background: rgba(61, 85, 111, 0.4);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.92rem;
+    color: #e3f6fd;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .info-inline span:hover {
+    background: rgba(86, 114, 137, 0.5);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .description {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 12px;
+    height: 80px; /* Fixed height */
+    color: #e2e8f0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .description:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .description::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .description::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+  }
+
+  .description::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+  }
+
+  .card-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: auto;
+    width: 100%;
+  }
+ 
+  .card-buttons i {
+    margin-left: 6px;
+  }
+
+  .btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    flex: 1;
+    max-width: 120px;
+  }
+
+  .btn-edit {
+    background-color: rgb(25, 134, 25);
+    border: 1px solid rgb(35, 129, 35);
+    color: white;
+  }
+
+  .btn-delete {
+    background-color: rgb(163, 36, 36);
+    border: 1px solid rgb(163, 36, 36);
+    color: white;
+  }
+
+  .btn-icon:hover {
+    background-color: #2a2f3b;
+    border: 1px solid white;
+    transform: translateY(-5px);
+  }
+
+  .card-link {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .card-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: #38bdf8;
+    transition: width 0.4s ease-in-out;
+    z-index: 1;
+  }
+
+  .card-link:hover::after {
+    width: 100%;
+  }
+
+  /* Improved Responsive Design */
+  @media (max-width: 1200px) {
+    .container {
+      padding: 15px;
+    }
+    .col-lg-3 {
+      width: 33.333%;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .col-lg-3 {
+      width: 50%;
+    }
+    .ggg {
+      padding: 15px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .title {
+      font-size: 1.1rem;
+    }
+    .description {
+      height: 70px;
+    }
+    .btn-icon {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .col-lg-3 {
+      width: 100%;
+    }
+    .ggg {
+      padding: 15px;
+      gap: 12px;
+    }
+    .info-inline span {
+      font-size: 0.85rem;
+      padding: 6px 10px;
+    }
+    .description {
+      font-size: 0.9rem;
+      padding: 10px;
+      height: 65px;
+    }
+    .btn-icon {
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+  }
+</style>
+
+{% extends './templates/base.html' %}
+
+{% block title %}
+  Vacancy List
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="section-header">
+    <h1 class="section-title">Our Vacancies</h1>
+  </div>
+
+  <div class="row g-3 mt-3">
+    {% if vacancies %}
+    {% for vacancy in vacancies %}
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="ggg">
+          <div class="card-header">
+            <a href="{% url 'apply_vacancy' vacancy.id %}" class="card-link">
+              <h5 class="title" title="{{ vacancy.position }}">{{ vacancy.position }}</h5>
+            </a>
+          </div>
+
+          <div class="info-inline">
+            <span>{{ vacancy.job_type|title }}</span>
+            <span>{{ vacancy.level|title }}</span>
+          </div>
+
+          <div class="description">
+            {{ vacancy.description }}
+          </div>
+
+          <div class="card-buttons">
+            <a href="{% url 'update_vacancy' vacancy.id %}" class="btn-icon btn-edit">
+              Edit <i class="fa-solid fa-user-pen"></i>
+            </a>
+            <a href="{% url 'delete_vacancy' vacancy.id %}" class="btn-icon btn-delete">
+              Delete <i class="fa-solid fa-trash"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    {% else %}
+      <div class="no-projects-message">
+        <i class="fas fa-inbox fa-3x"></i>
+        <h2>No Vacancies</h2>
+        <p>We havenot created any vacancies</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

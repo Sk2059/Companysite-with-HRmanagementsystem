@@ -1,0 +1,332 @@
+{% extends 'base.html' %}
+{% block title %}
+New messages
+{% endblock title %}
+{% block content %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0a0f1e, #1c2a3a, #2c3e50);
+    color: white;
+    min-height: 100vh;
+  }
+
+  .container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top:100px;
+  }
+
+  .section-header {
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  
+  .projects-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .project-card {
+    background: rgba(31, 44, 59, 0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+  }
+
+  .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(56, 189, 248, 0.15);
+    border-color: rgba(56, 189, 248, 0.3);
+  }
+
+  .project-info {
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
+    padding-right: 20px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .info-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .project-details {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+
+
+  .project-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .contact-email-section {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .contact-email-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    flex: 1;
+  }
+
+  .info-label {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .info-value {
+    font-size: 0.95rem;
+    color: #ffffff;
+    word-break: break-word;
+    line-height: 1.4;
+  }
+
+  .project-description {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 150px;
+    transition: all 0.3s ease;
+  }
+
+  .description-title {
+    font-size: 1.1rem;
+    color: #38bdf8;
+    margin-bottom: 10px;
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .description-content {
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    padding-top: 8px;
+    flex: 1;
+    overflow-y: auto;
+  }
+  .contact-email-item:hover,
+  .info-item:hover,
+  .project-description:hover{
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .action-btn {
+    width: 100%;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: white;
+  }
+
+  .btn-accept {
+    background-color: #10b981;
+    border: 1px solid #10b981;
+  }
+
+  .btn-decline {
+    background-color: #dc2626;
+    border: 1px solid #dc2626;
+  }
+
+  .action-btn:hover {
+    background-color: #2a2f3b;
+    border: 1px solid white;
+    transform: translateY(-5px);
+  }
+
+  .action-btn i {
+    font-size: 1.2rem;
+  }
+
+  .no-projects-message {
+    text-align: center;
+    padding: 40px;
+    background: rgba(31, 44, 59, 0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .no-projects-message i {
+    color: #38bdf8;
+    margin-bottom: 20px;
+  }
+
+  .no-projects-message h2 {
+    color: #ffffff;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+
+  .no-projects-message p {
+    color: #94a3b8;
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 992px) {
+    .project-card {
+      grid-template-columns: 1fr;
+    }
+
+    .project-info {
+      border-right: none;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      padding-right: 0;
+      padding-bottom: 15px;
+    }
+
+    .contact-email-section {
+      flex-direction: column;
+    }
+
+    .project-description {
+      min-height: 200px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .project-card {
+      padding: 15px;
+    }
+
+    .button-row {
+      flex-direction: column;
+    }
+
+    .action-btn {
+      width: 100%;
+    }
+
+    .section-title {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+<div class="container">
+  <div class="section-header">
+    <h1 class="section-title">messages</h1>
+  </div>
+
+  <div class="projects-grid">
+    {% if queryset %}
+      {% for project in queryset %}
+      <div class="project-card">
+        <div class="project-info">
+          <div>
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-label">Name:</div>
+                <div class="info-value">{{ project.name }}</div>
+              </div>
+            </div>
+
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-label">Subject:</div>
+                <div class="info-value">{{ project.subject }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <a href="{% url 'delete_contact' project.id %}" class="action-btn btn-decline" >
+              Clear <i class="fas fa-times-circle"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="project-details">
+          <div class="contact-email-section">
+            <div class="contact-email-item">
+              <div class="info-label">Contact</div>
+              <div class="info-value">{{ project.contact }}</div>
+            </div>
+
+            <div class="contact-email-item">
+              <div class="info-label">Email</div>
+              <div class="info-value">{{ project.email }}</div>
+            </div>
+          </div>
+
+          <div class="project-description">
+            <h3 class="description-title">Message</h3>
+            <div class="description-content">
+              {{ project.message}}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="no-projects-message">
+        <i class="fas fa-inbox fa-3x"></i>
+        <h2>No New messages</h2>
+        <p></p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %} 

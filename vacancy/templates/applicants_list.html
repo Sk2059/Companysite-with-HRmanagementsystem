@@ -1,0 +1,201 @@
+<style>
+    .image{
+        position: relative;
+        padding: 2px;
+        z-index: 5;
+        margin-top: -20px;
+        width: 100%;
+        font-weight: 500;
+        text-align: center;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+        background-color: #198754;  /* Green background color */
+        color: white;  /* White text to make it visible on the green background */
+        border-radius: 8px;
+    }    
+    .hw1{
+        margin-bottom: -1px;
+    }
+    .position-text {
+        margin-top: -5px;
+        color: rgb(223, 223, 223);  /* Set color of h6 to gray */
+    }
+    
+    .image-box {
+        z-index: 1;
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        border-radius: 50%;
+        top :5px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #f5f5f5;
+        border: 5px solid white;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }                    
+    .image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* full image without zoom */
+        object-position: center;
+       
+    }
+    .image a{
+        text-decoration: none;
+        color: white;
+        z-index:2 ;
+    }
+    .image h6{
+        color: rgb(223, 223, 223); 
+    }
+    </style>
+
+
+
+
+
+<style>
+ 
+
+ 
+ 
+
+  .ggg {
+    background: rgba(31, 44, 59, 0.75);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+    padding: 24px 18px 20px;
+    transition: all 0.35s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .ggg:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+  }
+
+
+  .card-header:hover .title {
+    color: #7ed6df;
+  }
+
+
+  .ggg:hover .info-inline span {
+    background: linear-gradient(145deg, #567289, #6d88a4);
+  }
+
+ 
+
+
+  @media (max-width: 576px) {
+    .title {
+      font-size: 1rem;
+    }
+
+    .info-inline span {
+      font-size: 0.85rem;
+    }
+  }
+  .card-link1{
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+  text-decoration: none;
+  color:white;
+  padding: 5px 0px;
+  margin-top: 15px;
+  border-top: 2px solid white;
+  transition: color 0.6s ease-in-out;
+  }
+
+  .card-link1::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 2px;
+  margin-top: -2px;
+  width: 0;
+  background-color:#7ed6df; /* Change this to the hover color */
+  transition: width 0.4s ease-in-out,color 0.4s ease-in-out;
+  z-index: 1;
+}
+
+.card-link1:hover::after {
+  width: 100%;
+  color:#7ed6df;
+}
+a{
+    text-decoration: none;
+}
+
+.depart{
+  color: gray;
+  font-size: 0.8rem;
+}
+.section-header{
+  margin-top: 20px;
+  padding-bottom: 30px;
+}
+</style>
+
+{% extends './templates/base.html' %}
+
+{% block title %}
+  Applicant List
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <div class="section-header">
+    <h1 class="section-title">Applicant List</h1>
+    <a href="{% url 'filter_list' %}" class="add-service-btn">
+       Filtered list
+    </a>
+  </div>
+  <div class="row g-4 mt-5">
+    {%if applicants_list%}
+  {% for data in applicants_list %}
+    
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+        <div class="ggg">
+          
+         <h6 class="faculty-badge">{{data.days_remaining}}</h6>
+          <!-- Title with white underline -->
+           <div class="image-box">
+                        <img src="/media/{{data.applicant.image}}" alt="{{data.applicant.name}}" loading="lazy" >
+                    </div>
+            <div class="card-header">
+            <a href="{% url 'applicant_details' data.applicant.id %}" class="card-link1">
+              <h5 class="title" >{{data.applicant.name }}</h5>
+              <h6 class="depart">{{data.applicant.vacancydetails.position}} ({{data.applicant.vacancydetails.level}})</h6>
+             
+            </a>
+        </div>
+    
+        </div>
+      </div>
+    {% endfor %}
+    {% else %}
+      <div class="no-projects-message">
+        <i class="fas fa-inbox fa-3x"></i>
+        <h2>No Applicants</h2>
+        <p>There are no applicnats yet</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+    
+

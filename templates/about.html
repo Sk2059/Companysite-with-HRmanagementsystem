@@ -1,0 +1,395 @@
+{% extends "header.html" %}
+{% load static %}
+{% block content %}
+<section class="cd-about-section">
+    <div class="cd-about-container">
+        <div class="cd-about-header">
+            <h2 class="cd-about-title">About Click Digitals</h2>
+            <p class="cd-about-subtitle">Driving digital transformation for modern businesses with passion, innovation, and impact.</p>
+        </div>
+
+        <div class="cd-about-body">
+            <div class="cd-about-text">
+                <h3>Who We Are</h3>
+                <p>
+                   Click Digitals is a results-driven IT company based in Biratnagar delivering custom software, web development, and digital marketing solutions. We leverage the latest technology and SEO strategies to help businesses grow, improve efficiency, and dominate online.
+                </p>
+
+                <h3>Our Mission</h3>
+                <p>
+                    To empower businesses of all sizes by providing strategic, innovative, and scalable digital solutions that drive success in a rapidly changing world.
+                </p>
+
+                <ul class="cd-about-values">
+                    <li>✔ Deliver innovative and custom IT solutions</li>
+                    <li>✔ Drive business growth through technology</li>
+                    <li>✔ Enhance online presence with expert SEO</li>
+                    <li>✔ Provide reliable, client-focused support</li>
+                </ul>
+                <a href="/contact" class="cd-btn cd-btn-primary">contact us</a>
+                <a href="/collab" class="cd-btn cd-btn-primary">Let’s Collaborate</a>
+            </div>
+
+            <div class="cd-about-image">
+                <img src="{% static 'images/team.webp' %}" loading="lazy" alt="About Click Digitals">
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .cd-about-section {
+    padding: 30px 20px;
+    background: linear-gradient(135deg, rgb(84, 84, 170), rgb(38, 52, 64), rgb(36, 62, 36));
+    animation: gradientShift 15s ease infinite;
+    background-size: 400% 400%;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.cd-about-container {
+    padding-top: 70px;
+    max-width: 1200px;
+    margin: 0 auto;
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.cd-about-header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: slideDown 1s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cd-about-title {
+    font-size: 36px;
+    font-weight: bold;
+    background: linear-gradient(135deg, rgb(3, 237, 250), rgb(23, 166, 255), rgb(27, 113, 45));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
+}
+
+.cd-about-subtitle {
+    font-size: 18px;
+    color: #e9f2f2;
+    max-width: 750px;
+    margin: 10px auto 0;
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cd-about-body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 40px;
+    animation: fadeIn 1s ease-out 0.5s both;
+}
+
+.cd-about-text {
+    flex: 1 1 500px;
+    animation: slideInLeft 1s ease-out 0.7s both;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.cd-about-text h3 {
+    font-size: 24px;
+    margin-top: 20px;
+    color: #07f2fa;
+    position: relative;
+    display: inline-block;
+}
+
+.cd-about-text h3::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #07f2fa;
+    animation: lineExpand 1s ease-out 1s forwards;
+}
+
+@keyframes lineExpand {
+    to { width: 100%; }
+}
+
+.cd-about-text p {
+    font-size: 16px;
+    color: #eeebeb;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 1.2s forwards;
+}
+
+.cd-about-values {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 30px;
+}
+
+.cd-about-values li {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #f1d7d7;
+    opacity: 0;
+    animation: slideInRight 0.5s ease-out forwards;
+}
+
+.cd-about-values li:nth-child(1) { animation-delay: 1.4s; }
+.cd-about-values li:nth-child(2) { animation-delay: 1.6s; }
+.cd-about-values li:nth-child(3) { animation-delay: 1.8s; }
+.cd-about-values li:nth-child(4) { animation-delay: 2s; }
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.cd-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 2.2s forwards;
+}
+
+.cd-btn-primary {
+    background: linear-gradient(45deg, rgb(3, 237, 250), rgb(32, 10, 232));
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.cd-btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.cd-btn-primary:hover::before {
+    left: 100%;
+}
+
+.cd-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(3, 237, 250, 0.3);
+}
+
+.cd-about-image {
+    flex: 1 1 400px;
+    text-align: center;
+    animation: slideInRight 1s ease-out 0.7s both;
+}
+
+.cd-about-image img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.cd-about-image img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced Responsive Styles */
+@media (max-width: 992px) {
+    .cd-about-container {
+        padding-top: 50px;
+    }
+
+    .cd-about-title {
+        font-size: 32px;
+    }
+
+    .cd-about-body {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .cd-about-section {
+        padding: 20px 15px;
+    }
+
+    .cd-about-body {
+        flex-direction: column-reverse;
+    }
+
+    .cd-about-title {
+        font-size: 28px;
+    }
+
+    .cd-about-subtitle {
+        font-size: 16px;
+    }
+
+    .cd-about-text h3 {
+        font-size: 22px;
+    }
+
+    .cd-about-image img {
+        max-width: 100%;
+    }
+
+    .cd-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .cd-about-container {
+        padding-top: 30px;
+    }
+
+    .cd-about-title {
+        font-size: 24px;
+    }
+
+    .cd-about-subtitle {
+        font-size: 14px;
+    }
+
+    .cd-about-text h3 {
+        font-size: 20px;
+    }
+
+    .cd-about-text p {
+        font-size: 14px;
+    }
+
+    .cd-about-values li {
+        font-size: 14px;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .cd-about-section {
+        background: none;
+    }
+
+    .cd-about-title {
+        color: #000;
+        background: none;
+        -webkit-background-clip: initial;
+        background-clip: initial;
+    }
+
+    .cd-about-image {
+        display: none;
+    }
+
+    .cd-btn {
+        display: none;
+    }
+}
+
+/* Dark Mode Enhancement */
+@media (prefers-color-scheme: dark) {
+    .cd-about-section {
+        background: linear-gradient(135deg, rgb(3, 3, 27), rgb(18, 26, 32), rgb(2, 20, 2));
+    }
+}
+
+/* Loading Animation */
+.cd-about-image img {
+    opacity: 0;
+    animation: imageLoad 0.8s ease-out forwards;
+}
+
+@keyframes imageLoad {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+
+</style>
+{% include "footer.html" %}
+{% endblock %}

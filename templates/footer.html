@@ -1,0 +1,40 @@
+{% load static %}
+<footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-about">
+            <h3>Click Digitals</h3>
+            <p>Driving Business Growth with Innovative Tech and Custom Digital Solutions.We deliver results through expert IT services and smart strategies.</p>
+        </div>
+
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'service_list' %}">Services</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-contact">
+            <h4>Contact Us</h4>
+            <p>Email: contact@clickdigitals.com</p>
+            <p>Phone:9814711234 </p>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/clickdigitals2024"><img src="{% static 'images/logo/facebook.svg' %}" loading="lazy" alt="Facebook"></a>  
+                <a href="#"><img src="{% static 'images/logo/twitter.svg' %}" loading="lazy" alt="Twitter"></a>
+                <a href="#"><img src="{% static 'images/logo/linkedin.svg' %}" loading="lazy" alt="LinkedIn"></a>
+                <a href="https://www.instagram.com/click.digitals?igsh=MW9uYjd5YWhwcnV0bw=="><img src="{% static 'images/logo/instagram.svg' %}" loading="lazy" alt="istagram"></a>
+            </div>
+            
+        </div>
+        
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Click Digitals. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
+</body>
+</html> 

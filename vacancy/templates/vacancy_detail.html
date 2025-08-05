@@ -1,0 +1,238 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0a0f1e, #1c2a3a, #2c3e50);
+    color: white;
+  }
+
+  .container {
+    padding-bottom: 60px;
+  }
+
+ 
+
+  .ggg {
+    background: rgba(31, 44, 59, 0.75);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+    padding: 24px 18px 20px;
+    transition: all 0.35s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .ggg:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+  }
+
+  .card-header {
+    text-align: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid white; /* White underline */
+  }
+
+  
+  .title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 auto;
+  width: 100%;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.3s;
+  display: inline-block;
+ 
+  padding-bottom: 4px;
+}
+
+  .card-header:hover .title {
+    color: #7ed6df;
+  }
+
+  .info-inline {
+    display: flex;
+    align-content: space-around;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 5px;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .info-inline span {
+    background: linear-gradient(145deg, #3d556f, #4e6a87);
+    padding: 8px 16px;
+    border-radius: 14px;
+    font-weight: 500;
+    font-size: 0.92rem;
+    color: #e3f6fd;
+    transition: background 0.3s ease;
+  }
+
+  .ggg:hover .info-inline span {
+    background: linear-gradient(145deg, #567289, #6d88a4);
+  }
+
+  .card-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+    width: 100%;
+  }
+ 
+  .card-buttons i{
+    margin-left: 5px;
+  }
+  .btn-icon {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: #ddd;
+    font-size: 1.1rem;
+    padding: 7px 13px;
+    border-radius: 8px;
+    text-decoration: none;
+    backdrop-filter: blur(3px);
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .btn-icon:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }
+  .btn-edit{
+    transition: background-color 0.3s ease;
+    background-color: rgb(25, 134, 25);
+    border:1px solid rgb(35, 129, 35)
+  }
+  .btn-delete{
+    transition: background-color 0.3s ease;
+    background-color: rgb(163, 36, 36);
+    border: 1px solid rgb(163, 36, 36);
+  }
+  .btn-icon:hover{
+     background-color: #2a2f3b;
+    border: 1px solid white;
+  }
+  @media (max-width: 576px) {
+    .title {
+      font-size: 1rem;
+    }
+
+    .info-inline span {
+      font-size: 0.85rem;
+    }
+  }
+  .card-link{
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+  text-decoration: none;
+  color: white;
+  padding-bottom: 5px;
+  border-bottom: 2px solid white;
+  transition: color 0.6s ease-in-out;
+  }
+
+  .card-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  margin-bottom: -2px;
+  width: 0;
+  background-color:rgb(0, 183, 255); /* Change this to the hover color */
+  transition: width 0.4s ease-in-out,color 0.4s ease-in-out;
+  z-index: 1;
+}
+
+.card-link:hover::after {
+  width: 100%;
+}
+.vac {
+    background-color: #0ea5e9;
+    border: 1px solid #0ea5e9;
+    color: white;
+    width: 40%;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 1.5rem;
+    transition: background-color 0.3s ease,transform 0.3s ease;
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
+  .vac-head{
+    text-align: center;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .vac:hover {
+    background-color: #2a2f3b;
+    border: 1px solid white;
+    transform: translateY(-5px);
+  }
+</style>
+
+{% extends './templates/base.html' %}
+
+{% block title %}
+  Vacancy Detail
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <div class="row g-4 mt-0">
+    <div class="vac-head">
+            <a href="#" class="vac">
+               {{ vacancy.position }}
+            </a>
+            <div class="info-inline">
+              <span>Job Type : {{ vacancy.job_type }}</span>
+              <span>Level : {{ vacancy.level }}</span>
+            </div>
+    </div>
+    <div class="card-header">
+            <div class="card-link">
+              <h2 class="title">Applicants</h2>
+            </div>
+            
+    </div>
+    {% for employee in employees %}
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+        <div class="ggg">
+        
+          <!-- Title with white underline -->
+           <div class="image-box">
+                        <img src="/media/{{employee.image}}" alt="" >
+                    </div>
+            <div class="card-header">
+            <a href="{% url 'details' employee.id %}" class="card-link1">
+              <h5 class="title" >{{employee.name }}</h5>
+            </a>
+        </div>
+    
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

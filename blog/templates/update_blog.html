@@ -1,0 +1,574 @@
+{% extends '.\templates\base.html' %}
+
+{% block title %}
+    blog list
+{% endblock title %}
+{% block content %}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+     
+
+        .container {
+            position: relative;
+    background: #1e2b3a;
+    border-radius: 16px;
+    padding: 20px 40px 40px 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    width: 100vw;
+    margin: auto;
+    color: white;
+    height: auto;
+    margin-top: 20px;
+    margin-bottom: 50px;
+            
+        }
+
+        h1 {
+            color: #4e73df;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #4e73df;
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        .form-section {
+            background-color: #28303b;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            border-left: 4px solid #4e73df;
+            transition: 0.8s box-shadow;
+
+        }
+        .form-section:hover{
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.6);;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #b0b0b0;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #e0e0e0;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #4e73df;
+            background-color: #3d3d3d;
+        }
+
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-button {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #aaa;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .file-input-button:hover {
+            background-color: #3d3d3d;
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Keywords Styles */
+        .keywords-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .keyword-tag {
+            background-color: #4e73df;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .keyword-tag button {
+            background: none;
+            border: none;
+            color: white;
+            margin-left: 8px;
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.8rem;
+        }
+
+        /* Subtopic Styles */
+        .subtopics-container {
+            margin-top: 20px;
+        }
+
+        .subtopic-card {
+            background-color:#2c3e50;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 3px solid #4e73df;
+            position: relative;
+        }
+
+        .subtopic-header {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .subtopic-title {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .delete-subtopic {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .delete-subtopic:hover {
+            background-color: #c82333;
+        }
+
+        .add-subtopic {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .add-subtopic:hover {
+            background-color: #218838;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background-color: #4e73df;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #3a5bbf;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .form-section {
+                padding: 15px;
+            }
+        }
+          input.form-control, select.form-control, textarea.form-control {
+    background-color: #2c3e50;  /* Dark slate */
+    color: #ecf0f1;             /* Light text */
+    padding: 10px;
+    border: 1px solid #34495e;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    width: 100%;
+    font-weight: 600;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  input.form-control::placeholder {
+    color: #95a5a6; /* Muted gray */
+  }
+
+  input.form-control:focus,textarea.form-control:focus, select.form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 6px 2px rgba(52, 152, 219, 0.4);  /* Soft blue glow */
+    background-color: #34495e;
+    color: #ecf0f1;
+  }
+    .submit {
+    background-color: #0ea5e9;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 1.4rem;
+    transition: background-color 0.3s ease, 0.3s transform ease;
+    margin-top: 20px;
+    width: 48%;
+    cursor: pointer;
+  }
+
+  .submit:hover {
+    background-color: #2a2f3b;
+    border-color: #3498db;
+    box-shadow: 0 0 6px 2px rgba(52, 152, 219, 0.4);
+    transform:translateY(-8px)
+  }
+
+  .cancel {
+    background-color: #eb3434e8;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 1.4rem;
+    transition: background-color 0.3s ease, 0.3s transform ease;
+    margin-top: 20px;
+    width: 48%;
+    cursor: pointer;
+  }
+
+  .cancel:hover {
+    background-color: #2a2f3b;
+    border-color: #3498db;
+    box-shadow: 0 0 6px 2px rgba(52, 152, 219, 0.4);
+    transform:translateY(-8px)
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+   .action-btn {
+    width: 20%;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: white;
+  }
+
+  .btn-accept {
+    background-color: #10b981;
+    border: 1px solid #10b981;
+  }
+
+  .btn-decline {
+    background-color: #dc2626;
+    border: 1px solid #dc2626;
+  }
+
+  .action-btn:hover {
+    background-color: #2a2f3b;
+    border: 1px solid white;
+    transform: translateY(-5px);
+  }
+  .form-header {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+    color: white;
+  }
+  
+  .close-btn {
+    position: absolute;
+   
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    line-height: 1;
+  }
+  
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="form-header">Update Blog</div>
+    <button type="button" class="close-btn" onclick="window.history.back();">&times;</button>
+
+    {% if messages %}
+    <div class="alert-container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" id="blogForm">
+        {% csrf_token %}
+        
+        <!-- Author Section -->
+        <div class="form-section row">
+            <h2><i class="fas fa-user-edit"></i> Author Information</h2>
+            <div class="form-group col-md-4 mb-3">
+                <label for="author_name">Author Name</label>
+                <input type="text" id="author_name" name="author_name" class="form-control" 
+                       value="{{ author.name }}" required>
+            </div>
+            <div class="form-group col-md-4 mb-3">
+                <label for="author_description">Author Description</label>
+                <input type="text" id="author_description" name="author_description" class="form-control"  
+                       value="{{ author.description }}" required maxlength="50">
+            </div>
+            <div class="form-group col-md-4 mb-3">
+                <label for="author_photo">Author Photo</label>
+                <input type="file" id="author_photo" name="author_photo" class="form-control" accept="image/*">
+                
+            </div>
+        </div>
+        
+        <!-- Blog Information Section -->
+        <div class="form-section row">
+            <h2><i class="fas fa-book-open"></i> Blog Information</h2>
+            <div class="form-group col-md-4 mb-3">
+                <label for="blog_title">Blog Title</label>
+                <input type="text" id="blog_title" name="blog_title" class="form-control" 
+                       value="{{ blog.title }}" required maxlength="200">
+            </div>
+            <div class="form-group col-md-4 mb-3">
+                <label for="blog_photo">Blog Cover Photo</label>
+                <input type="file" id="blog_photo" name="blog_photo" class="form-control" accept="image/*">
+                
+            </div>
+            <div class="form-group col-md-4 mb-3">
+                <label for="time_to_read">Reading Time (minutes)</label>
+                <input type="number" class="form-control" id="time_to_read" name="time_to_read" 
+                       value="{{ blog.time_to_read }}" min="1" required>
+            </div>
+            <div class="form-group  mb-3">
+                    <label for="detail" form="form-label">Blog detail </label>
+                    <textarea class="form-control"  name="detail" placeholder="" rows="2" required>{{blog.detail}}</textarea>
+                </div>
+             
+            
+            <!-- Keywords Section -->
+            <div class="form-group">
+                <label for="keywords_input">Keywords (Press Enter to add)</label>
+                <input type="text" id="keywords_input" class="form-control" placeholder="Type keyword and press Enter">
+                <div id="keywords_container" class="keywords-container">
+                    <!-- Keywords will be rendered here -->
+                </div>
+                <input type="hidden" id="keywords" name="keywords" value='{{ keywords|safe }}'>
+            </div>
+        </div>
+        
+        <!-- Subtopics Section -->
+        <div class="form-section row">
+            <h2><i class="fas fa-list-ul"></i> Subtopics</h2>
+            <div id="subtopics_container" class="subtopics-container">
+                <!-- Subtopics will be rendered here -->
+            </div>
+            <input type="hidden" id="subtopics_json" name="subtopics_json">
+            
+            <button type="button" id="add_subtopic" class="add-subtopic action-btn btn-accept">
+                <i class="fas fa-plus"></i> Add Subtopic
+            </button>
+        </div>
+        
+        <div class="button-row">
+            <button type="submit" class="submit">Update Blog</button>
+            <button type="button" class="cancel" onclick="window.history.back();">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize hidden fields with empty arrays if empty
+    const keywordsHidden = document.getElementById('keywords');
+    const subtopicsHidden = document.getElementById('subtopics_json');
+    
+    if (!keywordsHidden.value.trim()) keywordsHidden.value = '[]';
+    if (!subtopicsHidden.value.trim()) subtopicsHidden.value = '[]';
+
+    // Keywords Functionality
+    const keywordsInput = document.getElementById('keywords_input');
+    const keywordsContainer = document.getElementById('keywords_container');
+    
+    let keywords = JSON.parse(keywordsHidden.value || '[]');
+    renderKeywords();
+    
+    function renderKeywords() {
+        keywordsContainer.innerHTML = '';
+        keywords.forEach(keyword => {
+            const tag = document.createElement('div');
+            tag.className = 'keyword-tag';
+            tag.dataset.keyword = keyword;
+            tag.innerHTML = `
+                ${keyword}
+                <button type="button" class="remove-keyword">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            keywordsContainer.appendChild(tag);
+        });
+        keywordsHidden.value = JSON.stringify(keywords);
+    }
+    
+    keywordsInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const keyword = this.value.trim();
+            if (keyword && !keywords.includes(keyword)) {
+                keywords.push(keyword);
+                renderKeywords();
+                this.value = '';
+            }
+        }
+    });
+    
+    keywordsContainer.addEventListener('click', function(e) {
+        if (e.target.closest('.remove-keyword')) {
+            const keyword = e.target.closest('.keyword-tag').dataset.keyword;
+            keywords = keywords.filter(k => k !== keyword);
+            renderKeywords();
+        }
+    });
+    
+    // Subtopics Functionality
+    const subtopicsContainer = document.getElementById('subtopics_container');
+    const addSubtopicBtn = document.getElementById('add_subtopic');
+    
+    // Initialize subtopics from server data
+    {% for subtopic in subtopics %}
+    addSubtopicCard({
+        id: '{{ subtopic.id }}',
+        title: '{{ subtopic.title|escapejs }}',
+        description: '{{ subtopic.description|escapejs }}'
+    });
+    {% endfor %}
+    updateSubtopicsHidden();
+    
+    function addSubtopicCard(data = {}) {
+        const card = document.createElement('div');
+        card.className = 'subtopic-card';
+        if (data.id) card.dataset.subtopicId = data.id;
+        card.innerHTML = `
+            <div class="subtopic-header">
+                <input type="text" class="subtopic-title form-control" 
+                       value="${data.title || ''}" placeholder="Subtopic Title" required maxlength="200">
+                <button type="button" class="delete-subtopic">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            <textarea class="subtopic-description form-control" 
+                      placeholder="Subtopic Description" rows="4" required>${data.description || ''}</textarea>
+        `;
+        subtopicsContainer.appendChild(card);
+        
+        // Update on changes
+        card.querySelectorAll('input, textarea').forEach(el => {
+            el.addEventListener('input', updateSubtopicsHidden);
+        });
+    }
+    
+    function updateSubtopicsHidden() {
+        const subtopics = [];
+        document.querySelectorAll('.subtopic-card').forEach(card => {
+            subtopics.push({
+                id: card.dataset.subtopicId || null,
+                title: card.querySelector('.subtopic-title').value,
+                description: card.querySelector('.subtopic-description').value
+            });
+        });
+        subtopicsHidden.value = JSON.stringify(subtopics);
+    }
+    
+    addSubtopicBtn.addEventListener('click', addSubtopicCard);
+    
+    subtopicsContainer.addEventListener('click', function(e) {
+        if (e.target.closest('.delete-subtopic')) {
+            e.target.closest('.subtopic-card').remove();
+            updateSubtopicsHidden();
+        }
+    });
+    
+    // Ensure valid JSON before form submission
+    document.getElementById('blogForm').addEventListener('submit', function() {
+        if (!keywordsHidden.value.trim()) keywordsHidden.value = '[]';
+        if (!subtopicsHidden.value.trim()) subtopicsHidden.value = '[]';
+        updateSubtopicsHidden();
+    });
+});
+</script>
+    
+{% endblock content %}

@@ -1,0 +1,934 @@
+{% extends "header.html" %}
+{% block content %}
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #1e215d 0%, #2e2e4d 100%);
+        --accent-color: #64ffda;
+        --secondary-accent: #63fff5;
+        --text-primary: #ffffff;
+        --text-secondary: rgba(255, 255, 255, 0.8);
+        --card-bg: rgba(255, 255, 255, 0.05);
+        --card-border: rgba(255, 255, 255, 0.1);
+        --success-color: #4ade80;
+        --warning-color: #fbbf24;
+    }
+
+    body {
+        font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+        background: var(--primary-gradient);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    /* Hero Section */
+    .course-detail-hero {
+        position: relative;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(120deg, #17253c 0%, #163830 100%);
+        overflow: hidden;
+        padding-top: 100px; /* Add top padding to account for fixed navbar */
+    }
+
+    .course-detail-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 20%, rgba(100, 255, 218, 0.1) 0%, transparent 40%),
+            radial-gradient(circle at 80% 80%, rgba(29, 78, 216, 0.1) 0%, transparent 40%);
+        animation: gradientPulse 8s ease-in-out infinite alternate;
+    }
+
+    .hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 4rem;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-left {
+        opacity: 0;
+        transform: translateX(-50px);
+        animation: slideInLeft 1s ease-out 0.3s forwards;
+    }
+
+    .hero-right {
+        opacity: 0;
+        transform: translateX(50px);
+        animation: slideInRight 1s ease-out 0.5s forwards;
+    }
+
+    .course-badge-large {
+        display: inline-block;
+        background: linear-gradient(45deg, var(--accent-color), var(--secondary-accent));
+        color: #000;
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .course-title-large {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(45deg, var(--secondary-accent), #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.2;
+    }
+
+    .course-description-large {
+        font-size: 1.2rem;
+        line-height: 1.7;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+    }
+
+    .course-info-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 2rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--card-border);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .info-grid {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateX(5px);
+    }
+
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(45deg, var(--accent-color), var(--secondary-accent));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #000;
+        font-size: 1.1rem;
+    }
+
+    .info-content h4 {
+        margin: 0 0 0.25rem 0;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .info-content p {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .price-highlight {
+        text-align: center;
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: linear-gradient(45deg, rgba(100, 255, 218, 0.1), rgba(99, 255, 245, 0.1));
+        border-radius: 15px;
+        border: 1px solid var(--accent-color);
+    }
+
+    .price-amount {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .enroll-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: linear-gradient(45deg, var(--accent-color), var(--secondary-accent));
+        color: #000;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .enroll-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(100, 255, 218, 0.3);
+        color: #000;
+    }
+
+    /* Syllabus Section */
+    .syllabus-section {
+        padding: 6rem 2rem;
+        position: relative;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.8s ease-out 0.2s forwards;
+    }
+
+    .section-title {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, var(--secondary-accent), #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .section-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .syllabus-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .syllabus-module {
+        background: var(--card-bg);
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--card-border);
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: moduleAppear 0.6s ease-out forwards;
+    }
+
+    .syllabus-module:nth-child(1) { animation-delay: 0.1s; }
+    .syllabus-module:nth-child(2) { animation-delay: 0.2s; }
+    .syllabus-module:nth-child(3) { animation-delay: 0.3s; }
+    .syllabus-module:nth-child(4) { animation-delay: 0.4s; }
+
+    .module-header {
+        padding: 2rem;
+        background: linear-gradient(45deg, rgba(100, 255, 218, 0.05), rgba(99, 255, 245, 0.05));
+        border-bottom: 1px solid var(--card-border);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .module-header:hover {
+        background: linear-gradient(45deg, rgba(100, 255, 218, 0.1), rgba(99, 255, 245, 0.1));
+    }
+
+    .module-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0;
+    }
+
+    .module-name {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .module-number {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(45deg, var(--accent-color), var(--secondary-accent));
+        color: #000;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    .module-duration {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .expand-icon {
+        transition: transform 0.3s ease;
+        color: var(--accent-color);
+        font-size: 1.2rem;
+    }
+
+    .module-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .module-content.expanded {
+        max-height: 1000px;
+    }
+
+    .module-content.expanded .expand-icon {
+        transform: rotate(180deg);
+    }
+
+    .content-inner {
+        padding: 2rem;
+    }
+
+    .topics-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .topic-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .topic-item:last-child {
+        border-bottom: none;
+    }
+
+    .topic-item:hover {
+        background: rgba(255, 255, 255, 0.02);
+        padding-left: 1rem;
+        border-radius: 8px;
+    }
+
+    .topic-icon {
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(45deg, var(--success-color), var(--accent-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #000;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+        flex-shrink: 0;
+    }
+
+    .topic-content h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .topic-content p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    /* Features Section */
+    .features-section {
+        padding: 6rem 2rem;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 100%);
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .feature-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 2.5rem;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--card-border);
+        transition: all 0.4s ease;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: featureAppear 0.6s ease-out forwards;
+    }
+
+    .feature-card:nth-child(1) { animation-delay: 0.1s; }
+    .feature-card:nth-child(2) { animation-delay: 0.2s; }
+    .feature-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        border-color: var(--accent-color);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(45deg, var(--accent-color), var(--secondary-accent));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+        color: #000;
+    }
+
+    .feature-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+
+    .feature-description {
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    /* Animations */
+    @keyframes gradientPulse {
+        0% { transform: scale(1); opacity: 0.5; }
+        100% { transform: scale(1.2); opacity: 0.8; }
+    }
+
+    @keyframes slideInLeft {
+        from { opacity: 0; transform: translateX(-50px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(50px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes moduleAppear {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes featureAppear {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .hero-content {
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            text-align: center;
+        }
+        
+        .hero-right {
+            order: -1;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-content {
+            padding: 0 1rem;
+        }
+        
+        .course-title-large {
+            font-size: 2.5rem;
+        }
+        
+        .syllabus-section,
+        .features-section {
+            padding: 4rem 1rem;
+        }
+        
+        .module-header {
+            padding: 1.5rem;
+        }
+        
+        .content-inner {
+            padding: 1.5rem;
+        }
+        
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .feature-card {
+            padding: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .course-info-card {
+            padding: 1.5rem;
+        }
+        
+        .info-item {
+            padding: 0.75rem;
+        }
+        
+        .module-name {
+            font-size: 1.1rem;
+        }
+        
+        .topic-item {
+            padding: 0.75rem 0;
+        }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+</style>
+
+<div class="course-detail-hero">
+    <div class="hero-content">
+        <div class="hero-left">
+            <span class="course-badge-large">{{ course.get_level_display }}</span>
+            <h1 class="course-title-large">{{ course.title }}</h1>
+            <p class="course-description-large">{{ course.description }}</p>
+            <a href="{% url 'course_register' course.id %}" class="enroll-btn">
+                <span>Enroll Now</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        
+        <div class="hero-right">
+            <div class="course-info-card">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Course Type</h4>
+                            <p>{{ course.get_course_type_display }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Duration</h4>
+                            <p>{{ course.duration }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Mode</h4>
+                            <p>{{ course.mode }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Start Date</h4>
+                            <p>{{ course.start_date|date:"F j, Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="price-highlight">
+                    <div class="price-amount">₹{{ course.fee|floatformat:2 }}</div>
+                    <p>Complete Course Fee</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="syllabus-section">
+    <div class="section-header">
+        <h2 class="section-title">Course Syllabus</h2>
+        <p class="section-subtitle">Comprehensive curriculum designed to take you from beginner to expert</p>
+    </div>
+    
+    <div class="syllabus-container">
+        {% if course.syllabus %}
+            {% for module in course.syllabus %}
+            <div class="syllabus-module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <div class="module-name">
+                            <span class="module-number">{{ module.module_number }}</span>
+                            <span>{{ module.title }}</span>
+                        </div>
+                        <div class="module-duration">
+                            <i class="fas fa-clock"></i>
+                            <span>{{ module.duration|default:"TBD" }}</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-down expand-icon"></i>
+                </div>
+                <div class="module-content">
+                    <div class="content-inner">
+                        <ul class="topics-list">
+                            {% for topic in module.topics %}
+                            <li class="topic-item">
+                                <div class="topic-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="topic-content">
+                                    <h4>{{ topic.title }}</h4>
+                                    {% if topic.description %}
+                                    <p>{{ topic.description }}</p>
+                                    {% endif %}
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- Default syllabus modules when no custom syllabus is provided -->
+            <div class="syllabus-module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <div class="module-name">
+                            <span class="module-number">1</span>
+                            <span>Foundation & Basics</span>
+                        </div>
+                        <div class="module-duration">
+                            <i class="fas fa-clock"></i>
+                            <span>2 weeks</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-down expand-icon"></i>
+                </div>
+                <div class="module-content">
+                    <div class="content-inner">
+                        <ul class="topics-list">
+                            <li class="topic-item">
+                                <div class="topic-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="topic-content">
+                                    <h4>Introduction to the Field</h4>
+                                    <p>Overview of industry trends, career opportunities, and fundamental concepts</p>
+                                </div>
+                            </li>
+                            <li class="topic-item">
+                                <div class="topic-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="topic-content">
+                                    <h4>Basic Concepts</h4>
+                                    <p>Learn the fundamental principles and core concepts</p>
+                                </div>
+                            </li>
+                            <li class="topic-item">
+                                <div class="topic-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="topic-content">
+                                    <h4>Hands-on Practice</h4>
+                                    <p>Apply what you've learned through practical exercises</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="syllabus-module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <div class="module-name">
+                            <span class="module-number">2</span>
+                            <span>Intermediate Skills</span>
+                        </div>
+                        <div class="module-duration">
+                            <i class="fas fa-clock"></i>
+                            <span>3 weeks</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-down expand-icon"></i>
+                </div>
+                <div class="module-content">
+                    <div class="content-inner">
+                        <ul class="topics-list">
+                            <li class="topic-item">
+                                <div class="topic-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="topic-content">
+                                    <h4>Advanced Techniques</h4>
+                                    <p>Master intermediate-level skills and techniques</p>
+                                </div>
+                            </li>
+                            <li class="topic-item">
+                                <div class="topic-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="topic-content">
+                                    <h4>Real-world Applications</h4>
+                                    <p>Apply skills to real-world scenarios and projects</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="syllabus-module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <div class="module-name">
+                            <span class="module-number">3</span>
+                            <span>Advanced Topics</span>
+                        </div>
+                        <div class="module-duration">
+                            <i class="fas fa-clock"></i>
+                            <span>3 weeks</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-down expand-icon"></i>
+                </div>
+                <div class="module-content">
+                    <div class="content-inner">
+                        <ul class="topics-list">
+                            <li class="topic-item">
+                                <div class="topic-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="topic-content">
+                                    <h4>Advanced Concepts</h4>
+                                    <p>Dive deep into complex topics and advanced methodologies</p>
+                                </div>
+                            </li>
+                            <li class="topic-item">
+                                <div class="topic-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="topic-content">
+                                    <h4>Industry Best Practices</h4>
+                                    <p>Learn professional standards and industry best practices</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="syllabus-module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <div class="module-name">
+                            <span class="module-number">4</span>
+                            <span>Capstone Project</span>
+                        </div>
+                        <div class="module-duration">
+                            <i class="fas fa-clock"></i>
+                            <span>3 weeks</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-down expand-icon"></i>
+                </div>
+                <div class="module-content">
+                    <div class="content-inner">
+                        <ul class="topics-list">
+                            <li class="topic-item">
+                                <div class="topic-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="topic-content">
+                                    <h4>Project Planning</h4>
+                                    <p>Define project scope, requirements, and create development timeline</p>
+                                </div>
+                            </li>
+                            <li class="topic-item">
+                                <div class="topic-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="topic-content">
+                                    <h4>Implementation</h4>
+                                    <p>Build a complete project applying all learned concepts and skills</p>
+                                </div>
+                            </li>
+                            <li class="topic-item">
+                                <div class="topic-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="topic-content">
+                                    <h4>Presentation & Review</h4>
+                                    <p>Present your project and receive feedback from instructors and peers</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="section-header">
+        <h2 class="section-title">What You'll Get</h2>
+        <p class="section-subtitle">Everything you need to succeed in your learning journey</p>
+    </div>
+    
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-certificate"></i>
+            </div>
+            <h3 class="feature-title">Industry Certificate</h3>
+            <p class="feature-description">Earn a recognized certificate upon successful completion to showcase your new skills to employers.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-laptop-code"></i>
+            </div>
+            <h3 class="feature-title">Hands-on Projects</h3>
+            <p class="feature-description">Build real-world projects that you can add to your portfolio and demonstrate your expertise.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3 class="feature-title">Community Support</h3>
+            <p class="feature-description">Join our vibrant community of learners and get help from instructors and fellow students.</p>
+        </div>
+    </div>
+</section>
+
+<script>
+function toggleModule(header) {
+    const content = header.nextElementSibling;
+    const icon = header.querySelector('.expand-icon');
+    
+    // Close all other modules
+    document.querySelectorAll('.module-content').forEach(module => {
+        if (module !== content) {
+            module.classList.remove('expanded');
+            module.previousElementSibling.querySelector('.expand-icon').style.transform = 'rotate(0deg)';
+        }
+    });
+    
+    // Toggle current module
+    content.classList.toggle('expanded');
+    
+    if (content.classList.contains('expanded')) {
+        icon.style.transform = 'rotate(180deg)';
+    } else {
+        icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+// Intersection Observer for animations
+const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+// Observe elements for scroll animations
+document.addEventListener('DOMContentLoaded', function() {
+    const animatedElements = document.querySelectorAll('.syllabus-module, .feature-card, .section-header');
+    animatedElements.forEach(el => {
+        observer.observe(el);
+    });
+    
+    // Add smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});
+</script>
+
+{% include "footer.html" %}
+{% endblock %}
+

@@ -1,0 +1,867 @@
+{% extends "header.html" %}
+{% load static %}
+{% block content %}
+
+<section id="careers-page">
+  <!-- Header Section -->
+  <div class="careers-header">
+    <h1 class="careers-title">Career Opportunities</h1>
+    <p class="careers-subtitle">
+      Join Our Leading IT Team to Innovate and Grow. Explore Exciting Career Opportunities with Us!
+    </p>
+    <div class="tab-container">
+      <button class="tab-button active" data-tab="jobs">Jobs</button>
+      <button class="tab-button" data-tab="internships">Internships</button>
+    </div>
+  </div>
+
+  
+
+  <!-- Listings Section -->
+  <div class="careers-listings">
+    <div class="listings-container jobs-tab active">
+      <h2 class="section-heading">Job Opportunities</h2>
+      <div class="listings-grid">
+        {% for job in jobs %}
+        <div class="listing-card">
+          <div class="card-image-container">
+            <img src="/media/{{job.background_image}}" alt="{{job.position}}" class="listing-image">
+            <div class="image-overlay">
+              <div class="tag-container">
+                <span class="level-badge">{{job.level|title}}</span>
+                <span class="type-tag">{{job.job_type|title}}</span>
+              </div>
+              <span class="position-tag">{{job.position}}</span>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="card-header">
+              <div class="position-info">
+                
+              </div>
+            </div>
+            <div class="card-description">
+              <p>{{job.description}}</p>
+            </div>
+            <div class="card-footer">
+              <a href="{% url 'applicant' job.id %}" class="apply-button">
+                <span>Apply Now</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24">
+                  <path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4v3z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="listings-container internships-tab">
+      <h2 class="section-heading">Internship Opportunities</h2>
+      <div class="listings-grid">
+        {% for internship in intern %}
+        <div class="listing-card">
+          <div class="card-image-container">
+            <img src="/media/{{internship.background_image}}" alt="{{internship.position}}" class="listing-image">
+            <div class="image-overlay">
+              <div class="tag-container">
+                <span class="level-badge">{{internship.level|title}}</span>
+                <span class="type-tag">Internship</span>
+              </div>
+              <span class="position-tag">{{internship.position}}</span>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="card-header">
+              <div class="position-info">
+              </div>
+            </div>
+            <div class="card-description">
+              <p>{{internship.description}}</p>
+            </div>
+            <div class="card-footer">
+              <a href="{% url 'applicant' internship.id %}" class="apply-button">
+                <span>Apply Now</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24">
+                  <path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4v3z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+<!-- Benefits Section -->
+  <div class="careers-benefits">
+    <div class="benefits-wrapper">
+      <h2 class="section-heading">Why Join Click Digitals?</h2>
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <div class="benefit-icon">💼</div>
+          <h3 class="benefit-title">Career Growth</h3>
+          <p class="benefit-description">Clear career progression paths and opportunities for advancement.</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">💰</div>
+          <h3 class="benefit-title">Competitive Benefits</h3>
+          <p class="benefit-description">Comprehensive benefits package including health insurance and PTO.</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">🌍</div>
+          <h3 class="benefit-title">Work-Life Balance</h3>
+          <p class="benefit-description">Flexible working hours and remote work options available.</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">🎯</div>
+          <h3 class="benefit-title">Impactful Work</h3>
+          <p class="benefit-description">Work on meaningful projects that make a real difference.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Process Section -->
+  <div class="application-process">
+    <div class="process-container">
+      <h2 class="section-heading">Application Process</h2>
+      <div class="process-timeline">
+        <div class="timeline-step">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Submit Application</h3>
+          <p class="step-description">Complete our online application with your resume and cover letter</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Initial Screening</h3>
+          <p class="step-description">HR team reviews your application and schedules the interview</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Technical Interview</h3>
+          <p class="step-description">Meet with our technical team for skills assessment</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">4</div>
+          <h3 class="step-title">Final Interview</h3>
+          <p class="step-description">Meet with department heads and discuss role expectations</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonials Section -->
+  <div class="testimonials-section">
+    <div class="testimonials-container">
+      <h2 class="section-heading">What Our Team Says</h2>
+      <div class="testimonials-slider">
+        <div class="testimonial-card active">
+          <p class="testimonial-text">"Working at Click Digitals has been an amazing journey of professional growth. The supportive team and challenging projects have helped me advance my career."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <img src="{% static 'images/dipesh.jpg' %}" alt="Dipesh Ghimire">
+            </div>
+            <div class="author-info">
+              <h4 class="author-name">Dipesh Ghimire</h4>
+              <span class="author-role">Senior Developer</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-text">"At Click Digitals, we foster a passionate and collaborative culture that drives exceptional quality and innovation in every project."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <img src="{% static 'images/sk.jpeg' %}" alt="Abhishek karna">
+            </div>
+            <div class="author-info">
+              <h4 class="author-name">Sabinam Mahato</h4>
+              <span class="author-role">Frontend Developer</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-text">"Endless opportunities for growth and learning, with a strong focus on employee development and well-being. A place where you can truly make an impact."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <img src="{% static 'images/upasana.jpeg' %}" alt="Upasana Dahal">
+            </div>
+            <div class="author-info">
+              <h4 class="author-name">Upasana Dahal</h4>
+              <span class="author-role">Backend Developer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* Base Styles */
+#careers-page {
+  padding-top: 100px;
+  background: linear-gradient(135deg, #080f1c, #101d36);
+  color: #ffffff;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Header Section */
+.careers-header {
+  text-align: center;
+  padding: 4rem 1rem;
+  background: linear-gradient(90deg, rgba(45,25,65,0.8), rgba(58,74,102,0.8));
+  position: relative;
+  overflow: hidden;
+}
+
+.careers-title {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(45deg, #37aad7, #1cd3ca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleFloat 3s ease-in-out infinite;
+}
+
+@keyframes titleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.careers-subtitle {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  color: #cccccc;
+}
+
+/* Tab Navigation */
+.tab-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.tab-button {
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.1);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-button.active {
+  background: linear-gradient(45deg, #37aad7, #1cd3ca);
+  transform: scale(1.05);
+}
+
+/* Benefits Section */
+.careers-benefits {
+  padding: 4rem 1rem;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.benefit-item {
+  background: rgba(255,255,255,0.05);
+  padding: 2rem;
+  border-radius: 15px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  animation: fadeInUp 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.benefit-item:hover {
+  transform: translateY(-10px);
+  background: rgba(255,255,255,0.1);
+}
+
+.benefit-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  animation: iconPulse 2s infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Listings Section */
+.careers-listings {
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, rgba(8,15,28,0.95), rgba(16,29,54,0.95));
+  position: relative;
+}
+
+.listings-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease-out;
+}
+
+.listings-container.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.listings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+  margin-top: 3rem;
+  justify-items: center;
+}
+
+/* Ensure single card is centered */
+@supports (grid-template-columns: subgrid) {
+  .listings-grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 400px));
+  }
+}
+
+/* Card Styles */
+.listing-card {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(30px);
+  animation: cardAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.listing-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(54, 162, 235, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Image Container */
+.card-image-container {
+  position: relative;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  overflow: hidden;
+  background: #000; /* Dark background for images */
+}
+
+.listing-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: brightness(1.1) contrast(1.1); /* Enhance image clarity */
+}
+
+.listing-card:hover .listing-image {
+  transform: scale(1.1);
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, 
+    rgba(0,0,0,0.4) 0%,
+    rgba(0,0,0,0.5) 50%,
+    rgba(0,0,0,0.8) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.tag-container {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  flex-wrap: wrap;
+  z-index: 2; /* Ensure tags are above the overlay */
+}
+
+.level-badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  background: rgba(255,255,255,0.25);
+  color: white;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.type-tag {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  background: rgba(54, 162, 235, 0.95);
+  color: white;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.position-tag {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  z-index: 2;
+  margin-top: auto;
+}
+
+/* Card Content */
+.card-content {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.card-header,
+.position-info {
+  display: none;
+}
+
+.card-description {
+  color: #b0b0b0;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.card-footer {
+  margin-top: auto;
+}
+
+/* Apply Button */
+.apply-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(45deg, #36a2eb, #4bc0c0);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.apply-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(54, 162, 235, 0.3);
+  color: white;
+}
+
+.apply-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.apply-button:hover::before {
+  left: 100%;
+}
+
+.arrow-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.apply-button:hover .arrow-icon {
+  transform: translateX(5px);
+}
+
+/* Animations */
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered card animations */
+.listing-card:nth-child(1) { animation-delay: 0.1s; }
+.listing-card:nth-child(2) { animation-delay: 0.2s; }
+.listing-card:nth-child(3) { animation-delay: 0.3s; }
+.listing-card:nth-child(4) { animation-delay: 0.4s; }
+.listing-card:nth-child(5) { animation-delay: 0.5s; }
+.listing-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .listings-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .careers-listings {
+    padding: 3rem 1rem;
+  }
+
+  .listings-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .position-tag {
+    font-size: 1.2rem;
+  }
+
+  .card-content {
+    padding: 1.2rem;
+  }
+
+  .card-image-container {
+    padding-top: 66.67%; /* 3:2 aspect ratio for mobile */
+  }
+
+  .listing-image {
+    filter: brightness(1.15) contrast(1.15); /* Slightly increase clarity for mobile */
+  }
+
+  .image-overlay {
+    background: linear-gradient(to bottom, 
+      rgba(0,0,0,0.5) 0%,
+      rgba(0,0,0,0.6) 50%,
+      rgba(0,0,0,0.9) 100%
+    );
+  }
+}
+
+@media (max-width: 480px) {
+  .listings-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+
+  .listing-card {
+    max-width: 100%;
+  }
+
+  .image-overlay {
+    padding: 1rem;
+  }
+
+  .position-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .department-badge,
+  .level-badge {
+    text-align: center;
+  }
+}
+
+/* Center single card when only one exists */
+.listings-grid:only-child {
+  justify-content: center;
+}
+
+.listing-card:only-child {
+  margin: 0 auto;
+}
+
+/* Process Timeline */
+.application-process {
+  padding: 4rem 1rem;
+  background: rgba(255,255,255,0.02);
+}
+
+.process-timeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.timeline-step {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+}
+
+.timeline-step:hover {
+  transform: translateY(-10px);
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(45deg, #37aad7, #1cd3ca);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  padding: 4rem 1rem;
+}
+
+.testimonials-slider {
+  position: relative;
+  max-width: 800px;
+  margin: 3rem auto 0;
+}
+
+.testimonial-card {
+  display: none;
+  background: rgba(255,255,255,0.05);
+  padding: 2rem;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.testimonial-card.active {
+  display: block;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.author-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimonial-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: #37aad7;
+  transform: scale(1.2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .careers-title {
+    font-size: 2rem;
+  }
+
+  .careers-subtitle {
+    font-size: 1rem;
+  }
+
+  .tab-button {
+    padding: 0.6rem 1.5rem;
+  }
+
+  .benefit-item,
+  .listing-card,
+  .timeline-step,
+  .testimonial-card {
+    padding: 1.5rem;
+  }
+
+  .listing-image {
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .careers-header {
+    padding: 2rem 1rem;
+  }
+
+  .tab-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .benefits-grid,
+  .listings-grid,
+  .process-timeline {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Add this CSS for section headings */
+.section-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  background: linear-gradient(45deg, #37aad7, #1cd3ca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 0.5rem 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Tab switching
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.listings-container');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const tabName = button.getAttribute('data-tab');
+      
+      // Update active states
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      tabContents.forEach(content => content.classList.remove('active'));
+      
+      button.classList.add('active');
+      document.querySelector(`.${tabName}-tab`).classList.add('active');
+    });
+  });
+
+  // Testimonial slider
+  const testimonials = document.querySelectorAll('.testimonial-card');
+  const dots = document.querySelectorAll('.dot');
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    testimonials.forEach(slide => slide.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+    
+    testimonials[index].classList.add('active');
+    dots[index].classList.add('active');
+  }
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      currentSlide = index;
+      showSlide(currentSlide);
+    });
+  });
+
+  // Auto-advance slides
+  setInterval(() => {
+    currentSlide = (currentSlide + 1) % testimonials.length;
+    showSlide(currentSlide);
+  }, 5000);
+
+  // Animate elements on scroll
+  function animateOnScroll() {
+    const elements = document.querySelectorAll('.benefit-item, .listing-card');
+    
+    elements.forEach(element => {
+      const elementTop = element.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      
+      if (elementTop < windowHeight * 0.8) {
+        element.style.opacity = '1';
+        element.style.transform = 'translateY(0)';
+      }
+    });
+  }
+
+  window.addEventListener('scroll', animateOnScroll);
+  animateOnScroll(); // Initial check
+});
+</script>
+
+{% include "footer.html" %}
+{% endblock %} 

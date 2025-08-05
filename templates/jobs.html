@@ -1,0 +1,758 @@
+{% extends "header.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+  /* Main Container Styles */
+  #career-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, rgb(45, 25, 65), rgb(58, 74, 102));
+    color: #ffffff;
+    animation: backgroundShift 15s ease infinite;
+  }
+
+  @keyframes backgroundShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Header Section */
+  .career-header {
+    text-align: center;
+    padding: 4rem 1rem;
+    background: linear-gradient(90deg, rgb(45, 25, 65), rgb(58, 74, 102));
+    color: white;
+    position: relative;
+    overflow: hidden;
+    animation: headerGlow 8s ease-in-out infinite;
+  }
+
+  @keyframes headerGlow {
+    0% { box-shadow: 0 0 20px rgba(45, 25, 65, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(58, 74, 102, 0.5); }
+    100% { box-shadow: 0 0 20px rgba(45, 25, 65, 0.3); }
+  }
+
+  .career-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(45, 25, 65, 0.8), rgba(58, 74, 102, 0.8));
+    animation: gradientShift 8s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 0.8; transform: scale(1); }
+  }
+
+  .career-header__title {
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: titleFloat 3s ease-in-out infinite;
+  }
+
+  @keyframes titleFloat {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+
+  .career-header__subtitle {
+    font-size: 1.3rem;
+    max-width: 800px;
+    margin: 0 auto;
+    opacity: 0.95;
+    line-height: 1.6;
+    position: relative;
+  }
+
+  /* Benefits Section */
+  .career-benefits {
+    padding: 4rem 1rem;
+    background: linear-gradient(135deg, rgb(58, 74, 102), rgb(45, 25, 65));
+    position: relative;
+  }
+
+  .benefits-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .section-heading {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 3rem;
+    color: #ffffff;
+    position: relative;
+    padding-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #4a90e2, #357abd);
+    border-radius: 2px;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    padding: 1rem;
+  }
+
+  .benefit-item {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    animation: cardAppear 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  @keyframes cardAppear {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .benefit-item:nth-child(1) { animation-delay: 0.1s; }
+  .benefit-item:nth-child(2) { animation-delay: 0.2s; }
+  .benefit-item:nth-child(3) { animation-delay: 0.3s; }
+  .benefit-item:nth-child(4) { animation-delay: 0.4s; }
+
+  .benefit-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .benefit-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    animation: iconPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes iconPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  .benefit-title {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  .benefit-description {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.7;
+  }
+
+  /* Jobs List Section */
+  .career-listings {
+    padding: 2rem;
+    background: linear-gradient(90deg, #080f1c, #101d36);
+  }
+
+  .listings-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+    justify-items: center;
+  }
+
+  .section-heading {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    position: relative;
+  }
+
+  .section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #1a73e8;
+    border-radius: 2px;
+  }
+
+  .job-card {
+    background: linear-gradient(135deg, #1a1f2e 0%, #2a2f3e 100%);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 400px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .job-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border-color: rgba(26, 115, 232, 0.3);
+  }
+
+  .job-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 3px solid #1a73e8;
+    transition: transform 0.3s ease;
+  }
+
+  .job-card:hover .job-image {
+    transform: scale(1.05);
+  }
+
+  .job-title {
+    text-align: center;
+    color: #fff;
+    padding: 1.5rem 1.5rem 0.5rem;
+    font-size: 1.4rem;
+    margin: 0;
+    font-weight: 600;
+    position: relative;
+  }
+
+  .job-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 2px;
+    background: #1a73e8;
+    border-radius: 2px;
+  }
+
+  .job-description {
+    text-align: center;
+    color: #b0b0b0;
+    padding: 1rem 1.5rem 1.5rem;
+    margin: 0;
+    flex-grow: 1;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  .apply-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #1a73e8 0%, #0f428b 100%);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 0 auto 1.5rem;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 80%;
+    max-width: 200px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .apply-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+  }
+
+  .apply-button:hover::before {
+    left: 100%;
+  }
+
+  .apply-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
+  }
+
+  /* Application Process Section */
+  .application-process {
+    padding: 4rem 1rem;
+    background: linear-gradient(135deg, rgb(58, 74, 102), rgb(45, 25, 65));
+  }
+
+  .process-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .process-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2.5rem;
+    padding: 2rem 0;
+  }
+
+  .timeline-step {
+    text-align: center;
+    position: relative;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .timeline-step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .step-number {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(90deg, #4a90e2, #357abd);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  .step-title {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .step-description {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+  }
+
+  /* Testimonials Section */
+  .career-testimonials {
+    padding: 4rem 1rem;
+    background: linear-gradient(135deg, rgb(45, 25, 65), rgb(58, 74, 102));
+    position: relative;
+    overflow: hidden;
+  }
+
+  .testimonials-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .section-heading-testimonials {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 3rem;
+    color: #ffffff;
+    position: relative;
+    padding-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .section-heading-testimonials::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #4a90e2, #357abd);
+    border-radius: 2px;
+  }
+
+  .testimonials-slider {
+    display: flex;
+    gap: 2.5rem;
+    overflow-x: auto;
+    padding: 2rem 1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .testimonials-slider::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testimonial-jobs-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    min-width: 350px;
+    scroll-snap-align: start;
+    position: relative;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .testimonial-jobs-card:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-5px) scale(1.02);
+  }
+
+  .testimonial-text {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+
+  .testimonial-jobs-card:hover .testimonial-text {
+    color: #ffffff;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .testimonial-jobs-card:hover .testimonial-author {
+    border-top-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .author-avatar {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+      overflow: hidden;      /* hide overflow outside circle */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  .author-avatar img { 
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* maintain aspect ratio and fill container */
+  object-position: center;
+  }
+
+  .testimonial-jobs-card:hover .author-avatar {
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+  }
+
+  .author-avatar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1));
+    transition: all 0.3s ease;
+  }
+
+  .testimonial-jobs-card:hover .author-avatar::after {
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2));
+  }
+
+  .author-info {
+    flex: 1;
+  }
+
+  .author-name {
+    color: #ffffff;
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    transition: all 0.3s ease;
+  }
+
+  .testimonial-jobs-card:hover .author-name {
+    transform: translateX(5px);
+  }
+
+  .author-role {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    display: block;
+    transition: all 0.3s ease;
+  }
+
+  .testimonial-jobs-card:hover .author-role {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .testimonials-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .testimonial-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .testimonial-dot:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.2);
+  }
+
+  .testimonial-dot.active {
+    background: #6a89cc;
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(106, 137, 204, 0.6);
+    animation: dotPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes dotPulse {
+    0% { box-shadow: 0 0 15px rgba(106, 137, 204, 0.6); }
+    50% { box-shadow: 0 0 25px rgba(106, 137, 204, 0.8); }
+    100% { box-shadow: 0 0 15px rgba(106, 137, 204, 0.6); }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .career-header__title {
+      font-size: 2.2rem;
+    }
+
+    .section-heading, .section-heading-testimonials {
+      font-size: 1.8rem;
+    }
+
+    .benefits-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .process-timeline {
+      grid-template-columns: 1fr;
+    }
+
+    .testimonial-jobs-card {
+      min-width: 280px;
+      padding: 2rem;
+    }
+
+    .testimonial-text {
+      font-size: 1rem;
+    }
+
+    .author-avatar {
+      width: 50px;
+      height: 50px;
+    }
+
+    .author-name {
+      font-size: 1.1rem;
+    }
+
+    .job-card {
+      width: 90%;
+    }
+    
+    .career-listings {
+      padding: 1rem;
+    }
+  }
+</style>
+
+<section id="career-page">
+  <!-- Header Section -->
+  <div class="career-header">
+    <h1 class="career-header__title">Career Opportunities</h1>
+    <p class="career-header__subtitle">
+      Join Our Leading IT Team to Innovate and Grow. Explore Current Tech Job Openings and Elevate Your IT Career Today!
+    </p>
+  </div>
+
+  <!-- Benefits Section -->
+  <div class="career-benefits">
+    <div class="benefits-wrapper">
+      <h2 class="section-heading">Why Join Click Digitals?</h2>
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <div class="benefit-icon">💼</div>
+          <h3 class="benefit-title">Career Growth</h3>
+          <p class="benefit-description">Clear career progression paths and opportunities for advancement within the company.</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">💰</div>
+          <h3 class="benefit-title">Competitive Benefits</h3>
+          <p class="benefit-description">Comprehensive benefits package including health insurance, paid time off, and more.</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">🌍</div>
+          <h3 class="benefit-title">Work-Life Balance</h3>
+          <p class="benefit-description">Flexible working hours and remote work options to maintain a healthy work-life balance.</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">🎯</div>
+          <h3 class="benefit-title">Impactful Work</h3>
+          <p class="benefit-description">Work on meaningful projects that make a real difference in people's lives.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jobs List Section -->
+  <div class="career-listings"><h2 class="section-heading">Current Openings</h2>
+    <div class="listings-container">
+      
+      {% for job in jobs %}
+      <div class="job-card">
+        <img src="/media/{{job.background_image}}" alt="{{job.position}}" class="job-image">
+        <h3 class="job-title">{{job.position}}</h3>
+        <p class="job-description">{{job.description}}</p>
+        <a href="{% url 'applicant' job.id %}" class="apply-button">Apply Now</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Application Process Section -->
+  <div class="application-process">
+    <div class="process-container">
+      <h2 class="section-heading">Application Process</h2>
+      <div class="process-timeline">
+        <div class="timeline-step">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Submit Application</h3>
+          <p class="step-description">Complete our online application form with your resume and cover letter</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Initial Screening</h3>
+          <p class="step-description">HR team reviews your application  and shedules the  interview</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Technical Interview</h3>
+          <p class="step-description">Meet with our technical team for skills assessment</p>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">4</div>
+          <h3 class="step-title">Final Interview</h3>
+          <p class="step-description">Meet with department heads and discuss role expectations</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonials Section -->
+  <div class="career-testimonials">
+    <div class="testimonials-wrapper">
+      <h2 class="section-heading-testimonials">What Our Team Members Say</h2>
+      <div class="testimonials-slider">
+        <div class="testimonial-jobs-card">
+          <p class="testimonial-text">“Working at Click Digitals has been an amazing journey of professional growth and skill development. The supportive team and challenging projects have helped me advance my career and expand my expertise.”</p>
+          <div class="testimonial-author">
+            <div class="author-avatar"> <img src="{% static 'images/dipesh.jpg' %}" alt="photo"></div>
+            <div class="author-info">
+              <h4 class="author-name">Dipesh Ghimire</h4>
+              <span class="author-role">Senior Developer</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-jobs-card">
+          <p class="testimonial-text">“At Click Digitals, we foster a passionate and collaborative culture that drives exceptional quality and innovation in every project, making each day inspiring and rewarding.”</p>
+          <div class="testimonial-author">
+            <div class="author-avatar"> <img src="{% static 'images/sk.jpeg' %}" alt="photo"></div>
+            <div class="author-info">
+              <h4 class="author-name">Abhishek karna</h4>
+              <span class="author-role">Frontend Developer</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-jobs-card">
+          <p class="testimonial-text">“Endless opportunities for growth and learning, with a strong focus on employee development and well-being. A place where you can truly make a meaningful impact and progress.”</p>
+          <div class="testimonial-author">
+            <div class="author-avatar"><img src="{% static 'images/upasana.jpeg' %}" alt="photo"></div> 
+            <div class="author-info">
+              <h4 class="author-name">Upasana Dahal</h4>
+              <span class="author-role">Backend Developer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonials-nav">
+        <div class="testimonial-dot active"></div>
+        <div class="testimonial-dot"></div>
+        <div class="testimonial-dot"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+{% endblock %} 

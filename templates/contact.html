@@ -1,0 +1,151 @@
+{% extends "header.html" %}
+{% load static %}
+{% block content %}
+
+<section class="cd-contact-section">
+    <div class="bg-animation-container">
+        <div class="bg-animation-shape shape-1"></div>
+        <div class="bg-animation-shape shape-2"></div>
+        <div class="bg-animation-shape shape-3"></div>
+    </div>
+    
+    <div class="cd-container">
+        <h2 class="cd-section-title">Get in Touch</h2>
+        <p class="cd-section-subtitle">Have questions or ready to start your digital journey? We're just a message away.</p>
+        
+        <div class="cd-contact-grid">
+            <!-- Contact Form -->
+            <div class="cd-form-container">
+                <form action="{% url 'contact' %}" method="POST" class="cd-contact-form">
+                    {% csrf_token %}
+                    
+                    {% if messages %}
+                    <div class="messages" style="color:azure">
+                        {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    {% for field in form %}
+                    <div class="cd-form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="error-message">
+                            {{ field.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="cd-btn cd-btn-primary">Send Message</button>
+                </form>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="cd-info-container">
+                <h3>Contact Details</h3>
+                
+                <div class="cd-info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-content">
+                        <strong>Email</strong>
+                        <p>support@clickdigitals.com</p>
+                    </div>
+                </div>
+                
+                <div class="cd-info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <strong>Phone</strong>
+                        <p>+977 9814711234</p>
+                    </div>
+                </div>
+                
+                <div class="cd-info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <strong>Address</strong>
+                        <p>Kanchanbari, Biratnagar</p>
+                    </div>
+                </div>
+                 <div class="social-icons">
+                <a href="#"><img src="{% static 'images/logo/facebook.svg' %}" loading="lazy" alt="Facebook"></a>  
+                <a href="#"><img src="{% static 'images/logo/twitter.svg' %}" loading="lazy" alt="Twitter"></a>
+                <a href="#"><img src="{% static 'images/logo/linkedin.svg' %}" loading="lazy" alt="LinkedIn"></a>
+                <a href="#"><img src="{% static 'images/logo/instagram.svg' %}" loading="lazy" alt="istagram"></a>
+            </div>
+
+                <div class="cd-map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7141.997451496114!2d87.2731079760867!3d26.487985886918413!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef751a41ce045f%3A0xf0581245028310d1!2sClick%20Digitals!5e0!3m2!1sen!2snp!4v1745476172168!5m2!1sen!2snp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="cd-company-collab-section">
+    <div class="cd-company-collab-container">
+        <div class="cd-company-collab-content">
+            <h2 class="cd-company-collab-title">Collaborate With Us for Digital Growth</h2>
+            <p class="cd-company-collab-description">
+               Partner with Click Digitals, A leading IT and digital marketing company to drive innovation, boost online presence, and achieve sustainable business growth through tailored technology solutions.
+            </p>
+            <a  class="btn btn-primary" href="{% url 'collab' %}">click for more</a>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effect to form groups
+            const formGroups = document.querySelectorAll('.cd-form-group');
+            formGroups.forEach(group => {
+                const input = group.querySelector('input, textarea, select');
+                
+                if (input) {
+                    input.addEventListener('focus', () => {
+                        group.style.transform = 'translateY(-5px)';
+                    });
+                    
+                    input.addEventListener('blur', () => {
+                        if (!input.value) {
+                            group.style.transform = '';
+                        }
+                    });
+                }
+            });
+            
+            // Add parallax effect to background shapes
+            document.addEventListener('mousemove', (e) => {
+                const shapes = document.querySelectorAll('.bg-animation-shape');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                shapes.forEach(shape => {
+                    const speed = shape.classList.contains('shape-1') ? 20 : 
+                                 shape.classList.contains('shape-2') ? -15 : 10;
+                    
+                    shape.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+                });
+            });
+        });
+</script>
+
+
+<footer>
+{% include "footer.html" %}
+</footer>
+{% endblock  %}
+
+
+

@@ -1,0 +1,2057 @@
+{% extends "header.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+
+    .home-team-showcase {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #080836 0%,rgb(6, 19, 54) 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .home-team-showcase::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 20%, rgba(8, 65, 61, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(58, 15, 68, 0.05) 0%, transparent 50%);
+        animation: homeTeamBgPulse 15s ease-in-out infinite alternate;
+        z-index: 0;
+    }
+    
+    @keyframes homeTeamBgPulse {
+        0% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.05) rotate(1.5deg); }
+        100% { transform: scale(1.1) rotate(3deg); }
+    }
+
+    .home-showcase-title {
+        font-size: 2.2rem;
+        background: linear-gradient(45deg,rgb(159, 130, 206),rgb(249, 174, 89));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent; 
+        text-align: center;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    .home-showcase-title::after {
+        content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #11ff00 0%, #fd042a 100%);
+    border-radius: 2px;
+        animation: homeTitleUnderline 1.5s ease-out 0.5s both;
+    }
+
+    @keyframes homeTitleUnderline {
+        from { width: 0; }
+        to { width: 100px; }
+    }
+
+    .home-showcase-subtitle {
+        margin-top: 20px;
+        font-size: 1rem;
+        color: #fff;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 500;
+    }
+    
+    .home-team-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+        position: relative;
+        z-index: 1;
+        perspective: 1000px;
+    }
+    
+    .home-team-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 0;
+        transform: translateY(30px) rotateX(10deg);
+        animation: homeTeamCardFadeIn 0.6s ease forwards;
+        transform-style: preserve-3d;
+    }
+    
+    @keyframes homeTeamCardFadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0) rotateX(0);
+        }
+    }
+    
+    .home-team-card:hover {
+        transform: translateY(-10px) rotateX(0deg);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
+                    0 0 20px rgba(99, 255, 245, 0.1),
+                    0 0 40px rgba(232, 131, 255, 0.1);
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .home-card-image {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        margin: auto auto;
+        margin-top: 15px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        transition: all 0.4s ease;
+        animation: homeImageFloat 6s ease-in-out infinite;
+    }
+    
+    @keyframes homeImageFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .home-card-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(99, 255, 245, 0.2), rgba(232, 131, 255, 0.2));
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: 1;
+        border-radius: 50%;
+    }
+    
+    .home-team-card:hover .home-card-image {
+        transform: scale(1.1);
+        border-color: rgba(99, 255, 245, 0.5);
+        box-shadow: 0 0 30px rgba(99, 255, 245, 0.3);
+    }
+    
+    .home-team-card:hover .home-card-image::before {
+        opacity: 1;
+        animation: homeGradientPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes homeGradientPulse {
+        0%, 100% { opacity: 0.2; }
+        50% { opacity: 0.5; }
+    }
+    
+    .home-card-image img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .home-team-card:hover .home-card-image img {
+        transform: scale(1.1);
+    }
+    
+    .home-card-content {
+        padding: 25px;
+        text-align: center;
+        position: relative;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        transform: translateZ(10px);
+        transition: transform 0.3s ease;
+        margin-top: 20px;
+    }
+    
+    .home-team-card:hover .home-card-content {
+        transform: translateZ(30px);
+    }
+    
+    .home-card-content h3 {
+        font-size: 1.5rem;
+        color: #fff;
+        margin-bottom: 10px;
+        font-weight: 600;
+        position: relative;
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+    
+    .home-team-card:hover .home-card-content h3 {
+        transform: scale(1.05);
+    }
+    
+    .home-card-content h3::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #63fff5, #e883ff);
+        transition: width 0.4s ease;
+    }
+    
+    .home-team-card:hover .home-card-content h3::after {
+        width: 50%;
+        animation: homeBorderPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes homeBorderPulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+    
+    .home-card-content .role {
+        color: #63fff5;
+        font-size: 1rem;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+    
+    .home-card-content .bio {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    
+    .home-social-media {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+        transform: translateZ(20px);
+    }
+    
+    .home-media-link {
+        color: rgba(25, 236, 74, 0.7);
+        font-size: 1.2rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        transform-style: preserve-3d;
+    }
+    
+    .home-media-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #63fff5, #e883ff);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+    
+    .home-media-link:hover {
+        color: #fff;
+        transform: translateY(-3px) translateZ(30px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #63fff5, #e883ff);
+    }
+    
+    .home-media-link:hover::before {
+        opacity: 1;
+        animation: homeIconGlow 1.5s ease-in-out infinite;
+    }
+
+    @keyframes homeIconGlow {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+    
+    /* Staggered Animation for Team Cards */
+    .home-team-card:nth-child(1) { animation-delay: 0.2s; }
+    .home-team-card:nth-child(2) { animation-delay: 0.4s; }
+    .home-team-card:nth-child(3) { animation-delay: 0.6s; }
+    
+    /* Responsive Styles */
+    @media (max-width: 1024px) {
+        .home-team-showcase {
+            padding: 80px 0;
+        }
+    
+        .home-team-cards {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+    
+        .home-card-image {
+            height: 280px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .home-team-showcase {
+            padding: 60px 0;
+        }
+    
+        .home-team-cards {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+    
+        .home-card-image {
+            width: 150px;
+            height: 150px;
+        }
+    
+        .home-card-content {
+            padding: 20px;
+        }
+    
+        .home-card-content h3 {
+            font-size: 1.3rem;
+        }
+    
+        .home-card-content .role {
+            font-size: 0.9rem;
+        }
+    
+        .home-card-content .bio {
+            font-size: 0.9rem;
+        }
+    
+        .home-media-link {
+            width: 35px;
+            height: 35px;
+            font-size: 1.1rem;
+        }
+
+    }
+    
+    @media (max-width: 480px) {
+        .home-team-showcase {
+            padding: 50px 0;
+        }
+    
+        .home-team-cards {
+            grid-template-columns: 1fr;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    
+        .home-card-image {
+            width: 120px;
+            height: 120px;
+        }
+    
+        .home-card-content {
+            padding: 15px;
+        }
+    
+        .home-card-content h3 {
+            font-size: 1.2rem;
+        }
+    
+        .home-card-content .role {
+            font-size: 0.85rem;
+        }
+    
+        .home-card-content .bio {
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+    
+        .home-social-media {
+            gap: 12px;
+        }
+    
+        .home-media-link {
+            width: 32px;
+            height: 32px;
+            font-size: 1rem;
+        }
+    }
+    
+    /* Dark Mode Support */
+    @media (prefers-color-scheme: dark) {
+        .home-team-showcase {
+            background: linear-gradient(135deg, #0a0a1a 0%, #0d1b2a 100%);
+        }
+    
+        .home-team-card {
+            background: rgba(255, 255, 255, 0.03);
+        }
+    
+        .home-card-content {
+            background: rgba(255, 255, 255, 0.03);
+        }
+    }
+    
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+        .home-team-showcase::before,
+        .home-team-card,
+        .home-card-image img,
+        .home-media-link,
+        .home-card-content h3,
+        .home-card-content h3::after,
+        .home-card-image::before {
+            animation: none !important;
+            transition: none !important;
+        }
+    
+        .home-team-card {
+            opacity: 1;
+            transform: none;
+        }
+    
+        .home-team-card:hover {
+            transform: none;
+        }
+    
+        .home-card-content h3::after {
+            width: 50%;
+        }
+    } 
+    
+    /* Requirements List Styling */
+.requirements-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .requirements-list li {
+    position: relative;
+    padding: 12px 20px;
+    padding-left: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(99, 255, 245, 0.1);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    animation: slideInRight 0.5s ease-out forwards;
+    opacity: 0;
+  }
+  
+  .requirements-list li:nth-child(1) { animation-delay: 0.1s; }
+  .requirements-list li:nth-child(2) { animation-delay: 0.2s; }
+  .requirements-list li:nth-child(3) { animation-delay: 0.3s; }
+  .requirements-list li:nth-child(4) { animation-delay: 0.4s; }
+  
+  .requirements-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #63fff5;
+    font-weight: bold;
+    font-size: 1.1rem;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+  }
+  
+  .requirements-list li:hover {
+    transform: translateX(10px);
+    background: rgba(99, 255, 245, 0.1);
+    border-color: rgba(99, 255, 245, 0.2);
+    box-shadow: 0 5px 15px rgba(99, 255, 245, 0.1);
+  }
+  
+  .requirements-list li:hover::before {
+    color: #63fff5;
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* Responsive adjustments for requirements list */
+  @media (max-width: 768px) {
+    .requirements-list {
+      gap: 10px;
+    }
+    
+    .requirements-list li {
+      padding: 10px 15px;
+      padding-left: 35px;
+      font-size: 0.95rem;
+    }
+    
+    .requirements-list li::before {
+      left: 12px;
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .requirements-list li {
+      padding: 8px 12px;
+      padding-left: 30px;
+      font-size: 0.9rem;
+    }
+    
+    .requirements-list li::before {
+      left: 10px;
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Dark mode adjustments */
+  @media (prefers-color-scheme: dark) {
+    .requirements-list li {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(99, 255, 245, 0.08);
+    }
+    
+    .requirements-list li:hover {
+      background: rgba(99, 255, 245, 0.08);
+    }
+  }
+  
+  /* Print styles */
+  @media print {
+    .requirements-list li {
+      background: none;
+      border: 1px solid #ddd;
+      color: #333;
+      break-inside: avoid;
+    }
+    
+    .requirements-list li::before {
+      color: #333;
+    }
+  }
+
+/* Internships Section Styles */
+.internships-section {
+    padding: 5rem 1rem;
+    background: linear-gradient(to left , rgb(13, 13, 67) , rgb(30, 9, 9) );
+    position: relative;
+    overflow: hidden;
+}
+
+.internships-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+    opacity: 0.05;
+    pointer-events: none;
+}
+
+.internships-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.internships-section .section-title {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.internships-section .section-subtitle {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out 0.2s forwards;
+}
+
+.internships-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.internship-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s ease-out forwards;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.internship-card:nth-child(2) { animation-delay: 0.2s; }
+.internship-card:nth-child(3) { animation-delay: 0.3s; }
+.internship-card:nth-child(4) { animation-delay: 0.4s; }
+
+.internship-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.internship-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.internship-card:hover img {
+    transform: scale(1.05);
+}
+
+.internship-card h2 {
+    font-size: clamp(1rem, 3vw, 1rem);
+    color: rgb(8, 216, 239);
+    padding: 1rem 1rem 0.5rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.internship-card p {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0 1.5rem 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 2px 0px;
+}
+
+.apply-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgb(35, 104, 131);
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin: 0 1.5rem 1.5rem;
+}
+
+.apply-btn:hover {
+    background: rgb(4, 247, 255);
+    color:white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+
+
+
+
+}
+
+.view-all-btn {
+    display: block;
+    width: fit-content;
+    margin: 2rem 0 0 auto;
+    background: rgb(5, 199, 192);
+    border: 2px solid rgb(13, 115, 107);
+    color: black;
+
+}
+
+.view-all-btn:hover {
+    background: rgb(49, 180, 210);
+    color: black;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .internships-section {
+        padding: 3rem 1rem;
+    }
+
+    .internships-grid {
+        gap: 1.5rem;
+    }
+
+    .internship-card img {
+        height: 180px;
+    }
+
+    .internship-card h3 {
+        padding: 1rem 1rem 0.5rem;
+    }
+
+    .internship-card p {
+        padding: 0 1rem 1rem;
+    }
+
+    .apply-btn {
+        margin: 0 1rem 1rem;
+        padding: 0.6rem 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .internships-section {
+        padding: 2rem 1rem;
+    }
+
+    .internship-card img {
+        height: 160px;
+    }
+
+    .apply-btn {
+        width: calc(100% - 2rem);
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+/* Success Stories Section Styles */
+.cd-success-stories-section {
+    padding: 5rem 1rem;
+    background: linear-gradient(135deg, #0b061c 0%, rgb(6, 12, 31) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.cd-success-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.cd-section-title {
+    font-size: 2.2rem;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.cd-section-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.cd-success-slider {
+    position: relative;
+    margin: 2rem 0;
+}
+
+.cd-success-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.cd-success-card.active {
+    display: block;
+    animation: fadeInScale 0.6s ease-out forwards;
+}
+
+.cd-success-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.cd-company-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.cd-company-logo {
+    width: 80px;
+    height: 80px;
+    padding: 8px;  /* Consistent padding */
+    background: rgba(25, 67, 68, 0.95);  /* Lighter background for better contrast */
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+}
+
+.cd-company-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;  /* Maintain aspect ratio */
+    display: block;
+    max-width: 100%;  /* Ensure image doesn't overflow */
+    max-height: 100%;
+}
+
+/* Responsive adjustments for company logo */
+@media (max-width: 768px) {
+    .cd-company-logo {
+        width: 70px;
+        height: 70px;
+        padding: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cd-company-logo {
+        width: 60px;
+        height: 60px;
+        padding: 5px;
+    }
+}
+
+.cd-company-details h4 {
+    color: #fff;
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem;
+}
+
+.cd-company-details span {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.testimonial-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-content blockquote {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 2rem;
+    padding: 0 0 0 2rem;
+    border-left: 3px solid rgba(255, 255, 255, 0.1);
+    font-style: italic;
+}
+
+.testimonial-content blockquote::before {
+    content: '"';
+    position: absolute;
+    left: 0;
+    top: -1rem;
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.1);
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-right: 4rem;
+    justify-content: flex-end;  /* Align to the right */
+    margin-left: auto;  /* Push to the right edge */
+    width: 100%;
+}
+
+/* Responsive adjustments for the author section */
+@media (max-width: 768px) {
+    .testimonial-author {
+        padding-right: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .testimonial-author {
+        justify-content: center;
+        padding-right: 0;
+    }
+}
+
+.author-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.author-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.author-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.author-info strong {
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.author-info span {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+}
+
+/* Slider Controls */
+.cd-slider-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.cd-slider-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cd-slider-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.cd-slider-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.cd-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cd-dot.active {
+    background: #fff;
+    transform: scale(1.2);
+}
+
+/* Animations */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Improved responsive layout for testimonial section */
+.cd-success-stories-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.cd-success-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.cd-success-card {
+    display: none;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.cd-success-card.active {
+    display: block;
+    animation: fadeInScale 0.6s ease-out forwards;
+}
+
+/* Fix for very small screens */
+@media (max-width: 320px) {
+    .cd-success-card {
+        padding: 0.75rem;
+    }
+    
+    .cd-company-info {
+        margin-bottom: 1rem;
+    }
+    
+    .cd-company-logo {
+        width: 45px;
+        height: 45px;
+        padding: 3px;
+    }
+    
+    .cd-company-details h4 {
+        font-size: 1rem;
+    }
+    
+    .testimonial-content blockquote {
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+    }
+    
+    .author-image {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .author-info strong {
+        font-size: 0.8rem;
+    }
+    
+    .author-info span {
+        font-size: 0.7rem;
+    }
+    
+    .cd-slider-controls {
+        gap: 0.5rem;
+    }
+    
+    .cd-slider-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .cd-success-card {
+        padding: 1.5rem;
+    }
+
+    .cd-company-info {
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .testimonial-content blockquote {
+        font-size: 0.95rem;
+        padding-left: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .testimonial-author {
+        padding-right: 0;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+    
+    .author-info {
+        text-align: right;
+    }
+}
+
+@media (max-width: 576px) {
+    .cd-success-card {
+        padding: 1.25rem;
+    }
+
+    .cd-company-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .cd-company-details {
+        text-align: center;
+    }
+
+    .testimonial-content blockquote {
+        padding-left: 1rem;
+        font-size: 0.9rem;
+        text-align: center;
+        border-left: none;
+        padding: 0 0.5rem;
+    }
+    
+    .testimonial-content blockquote::before {
+        left: 50%;
+        transform: translateX(-50%);
+        top: -2rem;
+        opacity: 0.1;
+    }
+
+    .testimonial-author {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 0;
+    }
+    
+    .author-info {
+        text-align: center;
+        align-items: center;
+    }
+    
+    .cd-slider-dots {
+        gap: 0.4rem;
+    }
+    
+    .cd-dot {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 375px) {
+    .cd-success-stories-section {
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .cd-section-title {
+        font-size: 1.3rem;
+    }
+    
+    .cd-section-subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .cd-success-card {
+        padding: 1rem;
+    }
+    
+    .cd-company-logo {
+        width: 50px;
+        height: 50px;
+        padding: 4px;
+    }
+    
+    .testimonial-content blockquote {
+        font-size: 0.85rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .author-image {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Keep your existing internship section styles */
+
+
+/* Rest of your existing styles */
+
+/* Our Courses Section Styles */
+.courses-showcase-section {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #0a0a1a 0%, #0d1b2a 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.courses-showcase-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(99, 255, 245, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(232, 131, 255, 0.05) 0%, transparent 50%);
+    animation: coursesBgPulse 15s ease-in-out infinite alternate;
+    z-index: 0;
+}
+
+@keyframes coursesBgPulse {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.05) rotate(1deg); }
+    100% { transform: scale(1.1) rotate(2deg); }
+}
+
+.courses-section-title {
+    font-size: 2.5rem;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: courseTitleFadeIn 0.8s ease-out forwards;
+}
+
+.courses-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #63fff5, #e883ff);
+    border-radius: 2px;
+    animation: courseTitleUnderline 1.5s ease-out 0.5s forwards;
+}
+
+@keyframes courseTitleFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes courseTitleUnderline {
+    to {
+        width: 100px;
+    }
+}
+
+.courses-section-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    margin-bottom: 60px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: coursesSubtitleFadeIn 0.8s ease-out 0.3s forwards;
+}
+
+@keyframes coursesSubtitleFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.course-card {
+    height: 380px;
+    perspective: 1000px;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: courseCardFadeIn 0.8s ease-out forwards;
+    width: 100%;
+    min-width: 280px;
+}
+
+.course-card:nth-child(1) { animation-delay: 0.4s; }
+.course-card:nth-child(2) { animation-delay: 0.6s; }
+.course-card:nth-child(3) { animation-delay: 0.8s; }
+.course-card:nth-child(4) { animation-delay: 1s; }
+
+@keyframes courseCardFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.course-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.course-card:hover .course-card-inner {
+    transform: rotateY(180deg);
+}
+
+.course-card-front, .course-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.course-card-front {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.course-card-back {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.course-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #63fff5, #e883ff);
+    color: #0a0a1a;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    box-shadow: 0 5px 15px rgba(99, 255, 245, 0.3);
+    animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.course-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(99, 255, 245, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.course-icon i {
+    font-size: 2rem;
+    color: #63fff5;
+    transition: all 0.3s ease;
+}
+
+.course-card:hover .course-icon {
+    transform: scale(1.1);
+    background: rgba(99, 255, 245, 0.2);
+}
+
+.course-card-front h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.course-brief {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.course-card-back h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #63fff5;
+    font-weight: 600;
+}
+
+.course-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px;
+    text-align: left;
+    width: 100%;
+}
+
+.course-features li {
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+}
+
+.course-features li i {
+    color: #63fff5;
+    margin-right: 10px;
+    font-size: 0.9rem;
+}
+
+.course-meta {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.course-meta span {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+}
+
+.course-meta span i {
+    margin-right: 5px;
+    color: #63fff5;
+}
+
+.course-btn {
+    background: linear-gradient(90deg, #63fff5, #63a4ff);
+    color: #0a192f;
+    padding: 10px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+    box-shadow: 0 5px 15px rgba(99, 255, 245, 0.2);
+}
+
+.course-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(99, 255, 245, 0.3);
+    background: linear-gradient(90deg, #5ae0d7, #5590e6);
+}
+
+.courses-cta {
+    margin-top: 50px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: coursesCTAFadeIn 0.8s ease-out 1.2s forwards;
+}
+
+@keyframes coursesCTAFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.courses-view-all {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.courses-view-all:hover {
+    background: rgba(99, 255, 245, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-color: rgba(99, 255, 245, 0.3);
+    color: #63fff5;
+}
+
+.courses-view-all i {
+    transition: transform 0.3s ease;
+}
+
+.courses-view-all:hover i {
+    transform: translateX(5px);
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .courses-showcase-section {
+        padding: 80px 20px;
+    }
+    
+    .courses-grid {
+        gap: 25px;
+    }
+}
+
+@media (max-width: 992px) {
+    .courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .course-card {
+        height: 360px;
+    }
+}
+
+@media (max-width: 768px) {
+    .courses-showcase-section {
+        padding: 60px 20px;
+    }
+    
+    .courses-section-title {
+        font-size: 2rem;
+    }
+    
+    .courses-section-subtitle {
+        font-size: 1rem;
+        margin-bottom: 40px;
+    }
+    
+    .courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .course-card {
+        height: 340px;
+    }
+    
+    .course-card-front, .course-card-back {
+        padding: 20px;
+    }
+    
+    .course-icon {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .course-icon i {
+        font-size: 1.8rem;
+    }
+    
+    .course-card-front h3, .course-card-back h3 {
+        font-size: 1.3rem;
+    }
+    
+    .course-brief {
+        font-size: 0.95rem;
+    }
+    
+    .course-features li {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .courses-showcase-section {
+        padding: 50px 15px;
+    }
+    
+    .courses-section-title {
+        font-size: 1.8rem;
+    }
+    
+    .courses-section-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 30px;
+    }
+    
+    .courses-grid {
+        grid-template-columns: 1fr;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+    
+    .course-card {
+        height: 320px;
+    }
+    
+    .course-card-front, .course-card-back {
+        padding: 15px;
+    }
+    
+    .course-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 15px;
+    }
+    
+    .course-icon i {
+        font-size: 1.6rem;
+    }
+    
+    .course-card-front h3, .course-card-back h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+    
+    .course-brief {
+        font-size: 0.9rem;
+    }
+    
+    .course-features {
+        margin-bottom: 15px;
+    }
+    
+    .course-features li {
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+    
+    .course-meta {
+        margin-bottom: 15px;
+    }
+    
+    .course-meta span {
+        font-size: 0.8rem;
+    }
+    
+    .course-btn {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .courses-cta {
+        margin-top: 30px;
+    }
+    
+    .courses-view-all {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+    }
+}</style>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1>Start your Digital Journey with 
+                <span class="animated-text">
+                  <span>C</span><span>l</span><span>i</span><span>c</span><span>k</span><span>_</span><span>D</span><span>i</span><span>g</span><span>i</span><span>t</span><span>a</span><span>l</span><span>s</span><span>!</span>
+              </h1>
+            <p>Empower your business with Click_Digitals' innovative IT solutions. <br>
+We specialize in custom software development, digital marketing, and transformation services for your growth.</p>
+            <div class="cta-buttons">
+                <a href="{% url 'service_list' %}" class="btn btn-primary">Get Started</a>
+                <a href="{% url 'about' %}" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="{% static 'images/click.png.jpg' %}" loading="lazy"  alt="Technology Illustration">
+        </div>
+    </div>
+</section>
+
+<section class="hero hero-secondary">
+    <div class="hero-content">
+        <div class="hero-image">
+            <img src="{% static 'images/secondimg.webp' %}" loading="lazy" alt="Team working together">
+        </div>
+        <div class="hero-text">
+            <h2>Why Choose Click Digitals?</h2>
+            <p>We're more than a tech agency — we're your growth partner. From concept to launch, we deliver custom digital solutions designed to accelerate your business success.</p>
+            <ul class="features-list">
+                <li>Tailored IT Solutions to Drive Business Success</li>
+                <li>Agile Software Development for Rapid Results</li>
+                <li>Performance-Focused Digital Marketing Strategies</li>
+                <li>Expert IT Support & Proactive Consulting  </li>
+            </ul>
+            <div class="cta-buttons">
+                <a href="{% url 'collab'%}" class="btn btn-primary">Schedule meeting</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="services-section">
+    <div class="container">
+        <h2 class="section-title">Our Core Services</h2>
+        <p class="section-subtitle">Unlock Your Business Potential with Our Expert IT & Digital Marketing Services</p>
+        <div class="services-grid">
+            
+            <div class="service-card">
+                <img src="static/images/webdev.webp" alt="Software Development">
+                <h3>Website Development</h3>
+                
+                <ul class="requirements-list">
+                    <li>Dynamic, SEO-Optimized Websites for Top Visibility</li> 
+                    <li>Mobile-Responsive Designs for better Experience</li>
+                    <li>Secure and Scalable Web Solutions Tailored to Your Business</li>
+               </ul>
+                <a href="{% url 'development' %}" class="apply-btn" target="_blank">Apply Now</a>
+            </div>
+            <div class="service-card">
+                <img src="static/images/social.webp" loading="lazy" alt="Software Development">
+                <h3>Social Media Marketing</h3>
+                
+                <ul class="requirements-list">
+                    <li>Result-Driven SEO Strategies for Organic Growth</li> 
+                    <li>Comprehensive Digital Marketing Campaigns</li>
+                    <li>Expert SEO Services to Boost Organic Reach and Rankings</li>
+               </ul>
+                <a href="{% url 'Digitalmarketing_form' %}" loading="lazy" class="apply-btn" target="_blank">Apply Now</a>
+            </div>
+
+            <div class="service-card">
+                <img src="static/images/digital.webp" loading="lazy" alt="Software Development">
+                <h3>Digital Marketing</h3>
+                
+                <ul class="requirements-list">
+                    <li>Dynamic, SEO-Optimized Websites for Top Visibility</li> 
+                    <li>Mobile-Responsive Designs for better Experience</li>
+                    <li>Secure and Scalable Web Solutions Tailored to Your Business</li>
+               </ul>
+                <a href="{% url 'combo_packages' %}" loading="lazy" class="apply-btn" target="_blank">Apply Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- New Our Courses Section -->
+<section class="courses-showcase-section">
+    <div class="container">
+        <h2 class="courses-section-title">Our Courses</h2>
+        <p class="courses-section-subtitle">Accelerate Your Career with Industry-Relevant Training</p>
+        
+        <div class="courses-grid">
+            {% for course in courses %}
+            <div class="course-card">
+                <div class="course-card-inner">
+                    <div class="course-card-front">
+                        <div class="course-badge">{{course.level}}</div>
+                        <div class="course-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>{{course.title}}</h3>
+                        <p class="course-brief">{{course.description}}</p>
+                    </div>
+                    <div class="course-card-back">
+                        <h3>{{course.title}}</h3>
+                        <p>{{course.description | truncatechars:300}}</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> {{course.duration}}</span>
+                            <span><i class="fas fa-signal"></i> {{course.level}}</span>
+                        </div>
+                        <div class="course-meta">
+                            <span style="color: #109cc0;"><i class="fas fa-chalkboard-teacher"></i>{{ course.mode }}</span>
+                            <span><i class="fas fa-calendar-alt"></i>{{ course.start_date|date:"F j, Y" }}</span>
+                        </div>
+                        <a href="{% url 'course_register' course.id %}" class="course-btn">Enroll Now</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="courses-cta">
+            <a href="{% url 'courses' %}" class="courses-view-all">
+                View All Courses
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="internships-section">
+    <div class="container">
+        <h2 class="section-title" style="color: #fff;">Career Opportunities</h2>
+        <p class="section-subtitle" style="color: #fff;">
+            Join Our Leading IT Team to Innovate and Grow. Explore Exciting Career and Internship Opportunities with Us!
+        </p>
+        <div class="internships-grid">
+            {% for i in intern %}
+            <div class="internship-card">
+                <img src="/media/{{i.background_image}}" loading="lazy" alt="internship photo">
+                <h3>{{i.position}}</h3>
+                <p>{{i.description | truncatechars:100}}</p>
+                <a href="{% url 'applicant' i.id %}" class="apply-btn" target="_blank">
+                    Apply Now
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+            {% endfor %}
+            {% for i in jobs %}
+            <div class="internship-card">
+                <img src="/media/{{i.background_image}}" loading="lazy" alt="job photo">
+                <h3>{{i.position}}</h3>
+                <p>{{i.description | truncatechars:100}}</p>
+                <a href="{% url 'applicant' i.id %}" class="apply-btn" target="_blank">
+                    Apply Now
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <a class="apply-btn view-all-btn" href="{% url 'careers' %}">
+        View All Opportunities
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+    </a>
+</section>
+
+<section class="cd-company-collab-section">
+    <div class="cd-company-collab-container">
+        <div class="cd-company-collab-content">
+            <h2 class="cd-company-collab-title">
+                Partner With Us – let's Grow Together</h2>
+            <p class="cd-company-collab-description">
+                Partner with Click Digitals to grow your business through smart digital solutions. We team up with innovative brands to deliver expert web development and result-driven digital marketing.
+            </p>
+            <a  class="btn btn-primary search-button" href="{% url 'collab' %}">click for more</a>
+        </div>
+        
+    </div>
+</section>
+
+
+<section class="cd-success-stories-section">
+    <div class="cd-success-container">
+        <h2 class="cd-section-title">Client Success Stories</h2>
+        <p class="cd-section-subtitle">Proven Success That Powers Business Growth</p>
+        
+        <div class="cd-success-slider">
+            {% for testimonial in testimonials %}
+            <div class="cd-success-card {% if forloop.first %}active{% endif %}">
+                <div class="cd-success-content">
+                    <div class="cd-company-info">
+                        <div class="cd-company-logo">
+                            <img src="{{ testimonial.company_logo.url }}" alt="{{ testimonial.company_name }} Logo" loading="lazy">
+                        </div>
+                        <div class="cd-company-details">
+                            <h4>{{ testimonial.company_name }}</h4>
+                            <span>{{ testimonial.company_type }}</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-content">
+                    <blockquote>
+                            "{{ testimonial.quote }}"
+                    </blockquote>
+                        <div class="testimonial-author">
+                            <div class="author-image">
+                                <img src="{{ testimonial.author_image.url }}" alt="{{ testimonial.author_name }}" loading="lazy">
+                        </div>
+                            <div class="author-info">
+                                <strong>{{ testimonial.author_name }}</strong>
+                                <span>{{ testimonial.author_position }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="cd-slider-controls">
+            <button class="cd-slider-btn prev" onclick="changeStory(-1)">❮</button>
+            <div class="cd-slider-dots">
+                {% for testimonial in testimonials %}
+                <span class="cd-dot {% if forloop.first %}active{% endif %}" onclick="currentStory('{% widthratio forloop.counter 1 1 %}')" role="button" tabindex="0"></span>
+                {% endfor %}
+            </div>
+            <button class="cd-slider-btn next" onclick="changeStory(1)">❯</button>
+        </div>
+    </div>
+</section>
+
+<section class="home-team-showcase" id="our-team">
+    <div class="container">
+        <h2 class="home-showcase-title">Our Amazing Team</h2>
+        <p class="home-showcase-subtitle">Click Digitals Team – Skilled Minds Behind Your Digital Growth</p>
+        
+        <div class="home-team-cards">
+            <div class="home-team-card" id="team-lead">
+                <div class="home-card-image">
+                    <img src="{% static 'images/mahesh.png' %}" loading="lazy" alt="Team Member">
+                </div>
+                <div class="home-card-content">
+                    <h3>Mahesh das</h3>
+                    <p class="role">CEO & Founder</p>
+                    <p class="bio">Visionary leader with 5+ years of experience in digital transformation.</p>
+                    <div class="home-social-media">
+                        <a href="#" class="home-media-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="home-media-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-team-card" id="tech-lead">
+                <div class="home-card-image">
+                    <img src="{% static 'images/ashish.jpg' %}" loading="lazy" alt="Team Member">
+                </div>
+                <div class="home-card-content">
+                    <h3></h3>
+                    <p class="role"> Developer </p>
+                    <p class="bio">Tech innovator specializing in scalable architecture and AI solutions.</p>
+                    <div class="home-social-media">
+                        <a href="https://www.linkedin.com/in/upasana-dahal-100064319?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" class="home-media-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/UpasanaDahal" class="home-media-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-team-card" id="dev-lead">
+                <div class="home-card-image">
+                    <img src="{% static 'images/dipesh.jpg' %}" loading="lazy" alt="Team Member">
+                </div>
+                <div class="home-card-content">
+                    <h3>Dipesh Ghimire</h3>
+                    <p class="role"> Developer</p>
+                    <p class="bio">Full-stack expert passionate about creating efficient, user-friendly applications.</p>
+                    <div class="home-social-media">
+                        <a href="https://www.linkedin.com/in/dipesh8667/" class="home-media-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/dipesh867" class="home-media-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-team-card" id="dev-lead">
+                <div class="home-card-image">
+                    <img src="{% static 'images/sk.jpeg' %}" loading="lazy" alt="Team Member">
+                </div>
+                <div class="home-card-content">
+                    <h3>Sabinam Mahato</h3>
+                    <p class="role"> Developer</p>
+                    <p class="bio">Full-stack expert passionate about creating efficient, user-friendly applications.</p>
+                    <div class="home-social-media">
+                        <a href="https://www.linkedin.com/in/sabinam-mahato-706773311/" class="home-media-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/sabinam2049" class="home-media-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+  {% include "footer.html" %}   
+</footer>
+
+<script>
+    let currentSlide = 1;
+
+function showStory(n) {
+    n = parseInt(n);
+let stories = document.querySelectorAll('.cd-success-card');
+let dots = document.querySelectorAll('.cd-dot');
+
+if (n > stories.length) { currentSlide = 1; }
+if (n < 1) { currentSlide = stories.length; }
+
+stories.forEach(story => {
+story.classList.remove('active');
+});
+
+dots.forEach(dot => {
+dot.classList.remove('active');
+});
+
+stories[currentSlide - 1].classList.add('active');
+dots[currentSlide - 1].classList.add('active');
+}
+
+function changeStory(n) {
+    showStory(currentSlide += n);
+}
+
+function currentStory(n) {
+    showStory(currentSlide = n);
+}
+
+// Auto-play slider
+setInterval(() => {
+changeStory(1);
+}, 4000);
+
+// Add progress bar animations on scroll
+window.addEventListener('scroll', () => {
+const progressBars = document.querySelectorAll('.tech-progress');
+progressBars.forEach(bar => {
+const rect = bar.getBoundingClientRect();
+if (rect.top < window.innerHeight && rect.bottom > 0) {
+  const progress = bar.getAttribute('data-progress');
+  bar.style.setProperty('--progress', progress + '%');
+}
+});
+});
+</script>
+{% endblock   %}
